@@ -1,6 +1,6 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="../bundle/initialization.jspf" %>
-<c:set var="adminKapp" value="${space.getKapp(Text.defaultIfBlank(space.getAttributeValue('Admin Kapp Slug'),'admin'))}"/>
+
 <c:if test="${BundleHelper.checkKappAndForm('admin','broadcast-alerts')}">
     <c:set var="broadcastAlerts" value="${BridgedResourceHelper.search('Broadcast Alerts - All')}"/>
 </c:if>

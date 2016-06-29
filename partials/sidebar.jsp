@@ -79,12 +79,12 @@
             <li class="header">CATEGORIES</li>
             <%-- For each of the categories --%>
             <c:forEach items="${CategoryHelper.getCategories(kapp)}" var="category">
-                <c:set var="formsStatusActive" value="${FormHelper.getFormsByStatus(category.category,'Active')}"/>
+                <c:set var="categoryIsEmpty" value="${category.isEmpty()}"/>
                 <%-- If the category is not hidden, and it contains at least 1 form --%>
-                <c:if test="${fn:toLowerCase(category.getAttribute('Hidden').value) ne 'true' && not formsStatusActive}">
+                <c:if test="${fn:toLowerCase(category.getAttribute('Hidden').value) ne 'true' && not categoryIsEmpty}">
                         <%-- Set Classes in LI Based on active page and if there are non-empty subcategories --%>
                         <li class="parent <c:if test="${param['category'] eq category.slug}">active</c:if>" data-forms="${fn:length(category.forms)}">
-                            <a href="${bundle.kappLocation}?page=category&category=${text.escape(category.slug)}">
+                            <a class="<c:if test="${category.hasNonEmptySubcategories()}"> rotate</c:if>" href="${bundle.kappLocation}?page=category&category=${text.escape(category.slug)}">
                                 <span>${text.escape(category.name)}</span>
                                 <%-- If Subs exist, angle-left, otherwise show form count --%>
                                 <c:if test="${category.hasNonEmptySubcategories()}">

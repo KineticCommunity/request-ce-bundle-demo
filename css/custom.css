@@ -145,3 +145,11 @@ section.page form .required label.control-label:after {
 .warning .required {
   font-weight: bold; 
 }
+
+/*Over ride LTE default sidebar angle behavior */
+.sidebar-menu li.active > a.rotate > .fa-angle-right{
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg); 
+}
