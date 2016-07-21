@@ -71,11 +71,13 @@
                     </a>
                 </li>
             </c:if>
+            <c:if test="${!empty kapp.getForm('help')}">
             <li <c:if test="${activePage eq 'work-order'}">class="active"</c:if> >
                 <a href="${bundle.spaceLocation}/${kapp.slug}/help">
                     <i class="fa fa-life-ring"></i> <span>Help</span>
                 </a>
             </li>
+            </c:if>
             <li class="header">CATEGORIES</li>
             <%-- For each of the categories --%>
             <c:forEach items="${CategoryHelper.getCategories(kapp)}" var="category">

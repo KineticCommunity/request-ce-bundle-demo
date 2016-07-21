@@ -72,7 +72,15 @@
                         <!-- small box -->
                         <div class="small-box bg-maroon">
                             <div class="inner">
-                                <h3>${fn:length(SubmissionHelper.retrieveRecentSubmissionsByKapp(space.getAttributeValue('QApp Slug'), 'Draft', 999))}</h3>
+                            <!-- Check if the space has an attribute QApp Slug so that we don't get a 500 error attmpting to get an attribute that doesn't exist-->
+                            	<c:choose>
+									<c:when test="${space.hasAttribute('QApp Slug')}">
+                                		<h3>${fn:length(SubmissionHelper.retrieveRecentSubmissionsByKapp(space.getAttributeValue('QApp Slug'), 'Draft', 999))}</h3>
+                                	</c:when>
+                                	<c:otherwise>
+                                		<h3>&nbsp;</h3>
+                                	</c:otherwise>
+                                </c:choose>
                                 <p>My Tasks</p>
                             </div>
                             <div class="icon">

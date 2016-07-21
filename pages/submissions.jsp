@@ -17,8 +17,10 @@
         <c:set scope="page" var="typeVariables" value="${['bg-green','fa-thumbs-o-up']}"/>
     </c:when>
     <c:when test="${paramtype eq 'work-order'}">
+        <c:if test="${space.hasAttribute('QApp Slug')}">
         <c:set scope="request" var="openSubmissionsList" value="${SubmissionHelper.retrieveRecentSubmissionsByKapp(space.getAttributeValue('QApp Slug'), 'Draft', 999)}"/>
         <c:set scope="request" var="closedSubmissionsList" value="${SubmissionHelper.retrieveRecentSubmissionsByKapp(space.getAttributeValue('QApp Slug'), 'Closed',1000)}"/>
+        </c:if>
         <c:set scope="request" var="type" value="Tasks"/>
         <c:set scope="page" var="typeVariables" value="${['bg-maroon','fa-tasks']}"/>
     </c:when>
