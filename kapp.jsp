@@ -135,7 +135,7 @@
                             <div class="icon">
                                 <i class="fa fa-life-ring"></i>
                             </div>
-                            <a href="${bundle.spaceLocation}/${kapp.slug}/help" class="small-box-footer">Ask a Question <i class="fa fa-arrow-circle-right"></i></a>
+                            	<a <c:if test="${!empty kapp.getForm('help')}">href="${bundle.spaceLocation}/${kapp.slug}/help"</c:if> class="small-box-footer">Ask a Question <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div><!-- ./col -->
 
