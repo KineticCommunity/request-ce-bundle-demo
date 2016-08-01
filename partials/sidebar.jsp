@@ -11,7 +11,7 @@
                 <!-- search form -->
                 <c:choose>
                     <c:when test="${not empty space.getKapp('search') && (empty kapp || kapp.hasAttribute('Include in Global Search') || text.equals(kapp.slug, 'search'))}">
-                        <form action="${bundle.spaceLocation}/search" method="GET" class="sidebar-form">
+                        <form action="${bundle.spaceLocation}/search" method="GET" class="sidebar-form" id="sidebar-search">
                             <div class="input-group">
                                 <c:if test="${not empty kapp}">
                                     <input type="hidden" value="${text.equals(kapp.slug, "search") ? param["source"] : kapp.slug}" name="source">
@@ -24,7 +24,7 @@
                         </form>
                     </c:when>
                     <c:when test="${not empty kapp}">
-                        <form action="${bundle.kappLocation}" method="GET" class="sidebar-form">
+                        <form action="${bundle.kappLocation}" method="GET" class="sidebar-form" id="sidebar-search">
                             <div class="input-group">
                                 <input type="hidden" value="search" name="page">
                                 <input type="text" name="q" class="form-control" placeholder="Search..." value="${param["q"]}">

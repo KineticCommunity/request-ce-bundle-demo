@@ -46,7 +46,6 @@
             <bundle:script src="${bundle.location}/js/locking.js" />
             <bundle:script src="${bundle.location}/js/review.js"/>
             <bundle:script src="${bundle.location}/libraries/AdminLTE-Sass/build/js/app.min.js"/>
-
         </bundle:scriptpack>
         <bundle:yield name="head"/>
         <style>
