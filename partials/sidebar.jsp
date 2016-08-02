@@ -43,17 +43,17 @@
                 </a>
             </li>
             <li <c:if test="${activePage eq 'request'}">class="active"</c:if> >
-                <a href="${bundle.kappLocation}?page=submissions&type=request">
+                <a href="${bundle.kappLocation}?page=requests">
                     <i class="fa fa-shopping-cart"></i> <span>My Requests</span>
                 </a>
             </li>
             <li <c:if test="${activePage eq 'approval'}">class="active"</c:if> >
-                <a href="${bundle.kappLocation}?page=submissions&type=approval">
+                <a href="${bundle.kappLocation}?page=approvals">
                     <i class="fa fa-thumbs-o-up"></i> <span>My Approvals</span>
                 </a>
             </li>
             <li <c:if test="${activePage eq 'work-order'}">class="active"</c:if> >
-                <a href="${bundle.kappLocation}?page=submissions&type=work-order">
+                <a href="${bundle.kappLocation}?page=workOrder">
                     <i class="fa fa-tasks"></i> <span>My Tasks</span>
                 </a>
             </li>

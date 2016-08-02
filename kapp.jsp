@@ -50,7 +50,7 @@
                             <div class="icon">
                                 <i class="fa fa-shopping-cart"></i>
                             </div>
-                            <a href="${bundle.kappLocation}?page=submissions&type=request" class="small-box-footer">View Your Requests <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="${bundle.kappLocation}?page=requests" class="small-box-footer">View Your Requests <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div><!-- ./col -->
 
@@ -64,7 +64,7 @@
                             <div class="icon">
                                 <i class="fa fa-thumbs-o-up"></i>
                             </div>
-                            <a href="${bundle.kappLocation}?page=submissions&type=approval" class="small-box-footer">View Your Approvals <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="${bundle.kappLocation}?page=approvals" class="small-box-footer">View Your Approvals <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div><!-- ./col -->
                     
