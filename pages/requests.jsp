@@ -31,7 +31,7 @@
                 </li>
             </ul>
             <div class="tab-content"><div role="tabpanel" class="tab-pane active" id="tab_1">     
-                    <table class="table table-hover datatable">  
+                    <table id="openTable" class="table table-hover">  
                         <thead>
                             <tr>
                                 <th>Item Requested</th>
@@ -56,7 +56,7 @@
                     </table>
                 </div><!-- End Tab 1 -->
                 <div role="tabpanel" class="tab-pane" id="tab_2">
-                    <table class="table table-hover datatable">  
+                    <table id="closedTable" class="table table-hover datatable">  
                         <thead>
                             <tr>
                                 <th>Item Requested</th>
@@ -81,8 +81,8 @@
                     </table>
                 </div><!-- End Tab 2 -->
                 <div role="tabpanel" class="tab-pane" id="tab_3">
-                    <table class="table table-hover datatable">  
-                        <thead>
+                    <table id="draftTable" class="table table-hover">  
+<!--                        <thead>
                             <tr>
                                 <th>Item Requested</th>
                                 <th>Details</th>
@@ -102,7 +102,7 @@
                                     <td><span class="label ${statusColor}">${submission.coreState}</span></td>
                                 </tr>
                             </c:forEach>
-                        </tbody>
+                        </tbody>-->
                     </table>
                 </div><!-- End Tab 3 -->
             </div>

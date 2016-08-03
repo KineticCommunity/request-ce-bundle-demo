@@ -14,9 +14,11 @@
         <link rel="shortcut icon" href="${bundle.location}/images/favicon.ico" type="image/x-icon"/>
         <app:headContent/>
         <link href="${bundle.location}/libraries/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="${bundle.location}/libraries/jquery-datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
         <bundle:stylepack>
-            <bundle:style src="${bundle.location}/libraries/bootstrap/css/bootstrap.min.css"/>
+            <bundle:style src="${bundle.location}/libraries/bootstrap/css/bootstrap.min.css"/>   
+            <bundle:style src="${bundle.location}/libraries/jquery-datatables/media/css/jquery.dataTables.css" />
+            <bundle:style src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/css/responsive.dataTables.css" />
+          
             <bundle:style src="${bundle.location}/libraries/notifie/jquery.notifie.css"/>
             <c:choose>
                 <c:when test="${not empty themeBundlePathModifier}">
@@ -34,13 +36,13 @@
             <bundle:script src="${bundle.location}/libraries/underscore/underscore.js"/>
             <bundle:script src="${bundle.location}/libraries/moment/moment.js" />
             <bundle:script src="${bundle.location}/libraries/moment/moment-timezone.js" />
+            <bundle:script src="${bundle.location}/libraries/jquery-datatables/media/js/jquery.dataTables.js" />
+            <bundle:script src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/js/dataTables.responsive.js" />
             <bundle:script src="${bundle.location}/libraries/kd-search/search.js"/>
             <bundle:script src="${bundle.location}/libraries/kd-typeahead/kd-typeahead.js"/>
             <bundle:script src="${bundle.location}/libraries/kd-subforms/kd-subforms.js"/>
             <bundle:script src="${bundle.location}/libraries/bootstrap/js/bootstrap.min.js"/>
             <bundle:script src="${bundle.location}/libraries/notifie/jquery.notifie.js"/>
-            <bundle:script src="${bundle.location}/libraries/jquery-datatables/jquery.dataTables.js"/>
-            <bundle:script src="${bundle.location}/libraries/jquery-datatables/dataTables.bootstrap.js"/>
             <bundle:script src="${bundle.location}/libraries/typeahead/typeahead.min.js"/>
             <bundle:script src="${bundle.location}/js/catalog.js"/>
             <bundle:script src="${bundle.location}/js/locking.js" />
@@ -77,3 +79,6 @@
         </c:otherwise>
     </c:choose>
 </html>
+<script>
+    window.identity = '${identity.username}';
+</script>
