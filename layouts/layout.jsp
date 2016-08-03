@@ -76,4 +76,7 @@
             </body>
         </c:otherwise>
     </c:choose>
+    <script>
+        window.identity = '${identity.username}';
+    </script>
 </html>
