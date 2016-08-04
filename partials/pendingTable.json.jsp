@@ -1,9 +1,8 @@
 <%@include file="../bundle/initialization.jspf" %>
 
-<c:set scope="request" var="submissionList" value="${SubmissionHelper.getPaginatedSubmissions()}"/>
+<c:set scope="request" var="submissionList" value="${SubmissionHelper.retrieveSubmissionsByRequest()}"/>
 
 <json:object>
-    <json:property name="nextPageToken" value="${submissionList.getNextPageToken()}"/>
     <json:array name="columns">
         <json:object>
             <json:property name="title" value="Item Requested"/>
@@ -20,7 +19,7 @@
             <json:property name="className" value="data-moment"/>
         </json:object>
         <json:object>
-            <json:property name="title" value="State"/>
+            <json:property name="title" value="Decision"/>
             <json:property name="data" value="State"/>
             <json:property name="className" value="data-label"/>
         </json:object>

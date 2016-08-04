@@ -1,7 +1,6 @@
-<%@page pageEncoding="UTF-8" contentType="application/json" trimDirectiveWhitespaces="true"%>
 <%@include file="../bundle/initialization.jspf" %>
 
-<c:set scope="request" var="submissionList" value="${SubmissionHelper.retrieveSubmissionsFromRequest()}"/>
+<c:set scope="request" var="submissionList" value="${SubmissionHelper.retrieveSubmissionsByRequest()}"/>
 
 <json:object>
     <json:array name="columns">
@@ -10,18 +9,19 @@
             <json:property name="data" value="Form"/>
         </json:object>
         <json:object>
-            <json:property name="title" value="Submission"/>
+            <json:property name="title" value="Details"/>
             <json:property name="data" value="Submission"/>
             <json:property name="className" value="data-link"/>
         </json:object>
         <json:object>
-            <json:property name="title" value="Updated At"/>
+            <json:property name="title" value="Date Submitted"/>
             <json:property name="data" value="Updated At"/>
             <json:property name="className" value="data-moment"/>
         </json:object>
         <json:object>
             <json:property name="title" value="State"/>
             <json:property name="data" value="State"/>
+            <json:property name="className" value="data-label"/>
         </json:object>
     </json:array>
     <json:array name="data" var="submission" items="${submissionList}">

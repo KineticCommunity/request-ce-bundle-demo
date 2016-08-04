@@ -103,9 +103,18 @@
        
         if (currentId == 'approvals'){
             renderTable({
-                table: '#approvalTable',
+                table: '#pendingTable',
+                jsonFileName: 'pendingTable.json',
                 type: 'Approval',
+                coreState: ['Submitted','Draft'],
                 serverSide: false,
+            });
+            renderTable({
+                table: '#closedTable',
+                jsonFileName: 'closedTable.json',
+                type: 'Approval',
+                coreState: ['Closed'],
+                serverSide: true,
             });
         }
         if(currentId === 'requests'){
@@ -116,26 +125,35 @@
                 coreState: ['Submitted'],
                 serverSide: false
             });
-//            renderTable({
-//                table: '#closedTable',
-//                jsonFileName: 'closedTable.json',
-//                type: 'Service',
-//                coreState: ['Closed'],
-//                serverSide: true
-//            });
-//            renderTable({
-//                table: '#draftTable',
-//                jsonFileName: 'openTable.json',
-//                type: 'Service',
-//                coreState: ['Draft'],
-//                serverSide: false
-//            });
+            renderTable({
+                table: '#closedTable',
+                jsonFileName: 'closedTable.json',
+                type: 'Service',
+                coreState: ['Closed'],
+                serverSide: true
+            });
+            renderTable({
+                table: '#draftTable',
+                jsonFileName: 'openTable.json',
+                type: 'Service',
+                coreState: ['Draft'],
+                serverSide: false
+            });
         }
         if(currentId == 'workOrder'){
             $('#completeTable').removeData('pageTokens');
             renderTable({
-                table: '#completeTable',
-                length: 10,
+                table: '#openTable',
+                jsonFileName: 'openTable.json',
+                type: 'Work Order',
+                coreState: ['Submitted','Draft'],
+                serverSide: false,
+            });
+            renderTable({
+                table: '#closedTable',
+                jsonFileName: 'closedTable.json',
+                type: 'Work Order',
+                coreState: ['Closed'],
                 serverSide: true,
             });
         }
@@ -149,36 +167,36 @@
     });
 
     // Build Datatables if datatable class exists on a table. If empty, Display Empty Text 
-    $(function(){
-        // Make sure namespace exists
-        bundle.submissions = bundle.submissions || {};
-        bundle.submissions.tableObjects = bundle.submissions.tableObjects || {};
-
-        $('table.datatable').each(function(){
-            var usesearch = $(this).hasClass("nosearch") ? false:true ;
-            $(this).css("width:100%");
-            var tabId = $(this).closest('div.tab-pane').attr('id');
-            bundle.submissions.tableObjects[tabId] = $(this).DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": usesearch,
-                "order": [[ 3, "desc" ]],
-                "info": true,
-                "autoWidth": true,
-                "scrollX": true
-            });
-        })
-        $('td.dataTables_empty').html('None found. Check back soon!');
-    });
-
-    // Redraw datatable on tab select to redraw columns
-    $(function(){
-        //$('ul.nav-tabs li').on('click',function(){
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var tabId = $(e.target).attr("href").substring(1);
-            bundle.submissions.tableObjects[tabId].columns.adjust().draw();
-        });
-    })
+//    $(function(){
+//        // Make sure namespace exists
+//        bundle.submissions = bundle.submissions || {};
+//        bundle.submissions.tableObjects = bundle.submissions.tableObjects || {};
+//
+//        $('table.datatable').each(function(){
+//            var usesearch = $(this).hasClass("nosearch") ? false:true ;
+//            $(this).css("width:100%");
+//            var tabId = $(this).closest('div.tab-pane').attr('id');
+//            bundle.submissions.tableObjects[tabId] = $(this).DataTable({
+//                "paging": true,
+//                "lengthChange": false,
+//                "searching": usesearch,
+//                "order": [[ 3, "desc" ]],
+//                "info": true,
+//                "autoWidth": true,
+//                "scrollX": true
+//            });
+//        })
+//        $('td.dataTables_empty').html('None found. Check back soon!');
+//    });
+//
+//    // Redraw datatable on tab select to redraw columns
+//    $(function(){
+//        //$('ul.nav-tabs li').on('click',function(){
+//        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+//            var tabId = $(e.target).attr("href").substring(1);
+//            bundle.submissions.tableObjects[tabId].columns.adjust().draw();
+//        });
+//    })
 
     function renderTable(options){
         $.ajax({
@@ -187,7 +205,6 @@
             dataType: "json",
             contentType: 'application/json',
             success: function(data, textStatus, jqXHR){
-              //  $.fn.dataTable.moment('MMMM Do YYYY, h:mm:ss A');
                 records = $.extend(data, {
                     responsive: {breakpoints: [
                         { name: 'desktop', width: Infinity },
@@ -195,8 +212,7 @@
                         { name: 'fablet',  width: 768 },
                         { name: 'phone',   width: 480 }
                     ]},
-                    "destroy": true,
-                    "order": [[ 0, "desc" ]],
+                    "destroy": true,                   
                     "bSort": options.serverSide ? false : true,
                     "pagingType": options.serverSide ? "simple" : "simple_numbers",
                     "dom": options.serverSide ? '<"top"l><"dataTables_date">t<"bottom"p><"clear">' : 'lftip',
@@ -211,6 +227,9 @@
                             }else{
                                 $(td).html("<a href='"+window.bundle.kappLocation()+"?page=submission&id="+data.Id+"'>"+data.Submission+"</a>"); 
                             }
+                        });
+                        $(row).find('td.data-label').each(function(index, td) {
+                            $(td).html('<span class="label '+labelStatusColor(options, data)+'">'+data.State+'</span>'); 
                         });
                     },
                 });
@@ -319,6 +338,19 @@
             }));
         });
     };
+    
+    function labelStatusColor(options, data){
+        var statusColor;
+        if(data.State == "Draft"){
+            statusColor = "label-warning";
+        }else if(data.State == "Submitted"){
+            statusColor = "label-primary"; 
+        }else{
+            statusColor = "label-default"; 
+        }
+        console.log(options);
+        return statusColor;
+    }
     
     // Display error message if authentication error is found in URL.  This happens if login credentials fail.
     $(function(){
