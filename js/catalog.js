@@ -430,7 +430,6 @@
             message: 'There was a ' + response.status + ' : "' + response.statusText + '" error.' ,
             exitEvents: "click"
         });
-        console.log(response);
     }
 
 })(jQuery, _, moment);
