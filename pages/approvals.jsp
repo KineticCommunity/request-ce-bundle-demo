@@ -32,12 +32,14 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="tab_1">
                 <table id="pendingTable" class="table table-hover" width="100%">  
-                  
+                    <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                        The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>                  
                 </table>
             </div><!-- End Tab 1 -->
             <div role="tabpanel" class="tab-pane" id="tab_2">
                 <table id="closedTable" class="table table-hover" width="100%">  
-                   
+                    <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                        The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>                   
                 </table>
             </div><!-- End Tab 2 -->
         </div>

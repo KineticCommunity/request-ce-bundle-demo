@@ -97,10 +97,26 @@
 //            ]
 //        });
 //    }
-    //Request and Approval datatables 
+    /*
+     * DataTables
+     * These dynamicly created tables gerneraed from an ajax call located in the renderTable function.
+     * The ajax call is configured to hit an endpoint in the partials file of the bundle that the kapp is pointed at.
+     * The renderTable function has required and optional parameters.
+     * 
+     * ATTRIBTUES: 
+     * table                        *REQUIRED       (this will be id of the table element in the html file that the dataTable will be rendered in)
+     * jsonFileName                 *REQUIRED       (the file name that has the json payload for the dataTable)
+     * type                         *OPTIONAL       (not including a type or including an empty sting will return submissions with a null type {as of core 1.0.6})
+     * coreState                    *OPTIONAL       (this will return all submissions for the current kapp that match the core state)
+     * serverSide                   *OPTIONAL       (for server side pagination)
+     *  length                      *OPTIONAL       (use with serverSide.  Sets the number of rows that are displayed on the load of the table. defaults to 10)
+     */
     $(function(){
         currentId = getUrlParameters().page;
        
+        /*  The dataTables that are built depend on the value of the page parameter in the url. 
+         *  The the object sent to the renderTable function is extended with format options for the dataTable.
+         */
         if (currentId == 'approvals'){
             renderTable({
                 table: '#pendingTable',
@@ -111,7 +127,7 @@
             });
             renderTable({
                 table: '#closedTable',
-                jsonFileName: 'closedTable.json',
+                jsonFileName: 'completedTable.json',
                 type: 'Approval',
                 coreState: ['Closed'],
                 serverSide: true,
@@ -205,6 +221,7 @@
             dataType: "json",
             contentType: 'application/json',
             success: function(data, textStatus, jqXHR){
+                // extend the object to format the dataTable.
                 records = $.extend(data, {
                     responsive: {breakpoints: [
                         { name: 'desktop', width: Infinity },
@@ -243,8 +260,6 @@
                     serverOptions(options,data);
                 }
             },
-        }).done(function(){
-            
         });
     }
     
@@ -278,9 +293,9 @@
         return url;
     }
     
-        /*  This code is to override dataTables default behavior. 
+    /*  This code is to override dataTables default behavior. 
      *  This is done because dataTables uses an offset token for pagination but core does has the concept of page tokens.
-    */
+     */
     function serverOptions(options,data){
         // For server side pagination we are collecting the nextpagetoken metadata that is attached to submissions return object.
         // The token is added to an array that is attached to the table elements data property. 
@@ -339,16 +354,29 @@
         });
     };
     
+    /*  This sets the color of the value in the status field in the dataTable.  
+     *  The value for data.State is set here if the submission had a field with the name 'Decision'.
+     */
     function labelStatusColor(options, data){
         var statusColor;
-        if(data.State == "Draft"){
-            statusColor = "label-warning";
-        }else if(data.State == "Submitted"){
-            statusColor = "label-primary"; 
+        if(data.Values !== undefined && data.Values.Decision !== undefined){
+            data.State = data.Values.Decision;
+            if(data.Values.Decision === "Approved"){
+                statusColor = "label-success";
+            }else if(data.Values.Decision === "Denied"){
+                statusColor = "label-danger";
+            }else{
+                statusColor = "label-default"; 
+            }
         }else{
-            statusColor = "label-default"; 
+            if(data.State == "Draft"){
+                statusColor = "label-warning";
+            }else if(data.State == "Submitted"){
+                statusColor = "label-primary"; 
+            }else{
+                statusColor = "label-default"; 
+            }
         }
-        console.log(options);
         return statusColor;
     }
     
