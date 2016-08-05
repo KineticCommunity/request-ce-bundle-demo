@@ -110,12 +110,12 @@
          * If the image is stored locally we add the bundle path so that it does not need to be added in the attribute.
          */
         public String getLogo(Kapp kapp){
-            if(kapp.getAttributeValue("Company Logo").toLowerCase().contains("http")){
-                return kapp.getAttributeValue("Company Logo");
-            }
-            else {
-                return bundle.getPath() + "/" + kapp.getAttributeValue("Company Logo");
-            }
+                if(kapp.getAttributeValue("Company Logo").toLowerCase().contains("http")){
+                    return kapp.getAttributeValue("Company Logo");
+                }
+                else {
+                    return bundle.getPath() + "/" + kapp.getAttributeValue("Company Logo");
+                }
         }
 
         /**

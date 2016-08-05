@@ -31,77 +31,15 @@
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="tab_1">
-                <table class="table table-hover datatable">  
-                    <thead>
-                        <tr>
-                            <th>Item Requested</th>
-                            <th>Details</th>
-                            <th>Date Submitted</th>
-                            <th>Decision</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${openSubmissionsList}" var="submission">
-                            <c:set var="statusColor" value="label-success"/>
-                            <tr>
-                                <td>${text.escape(submission.form.name)}</td>
-                                <td><a href="${bundle.spaceLocation}/submissions/${submission.id}">${text.escape(submission.label)}</a></td>
-                                <td data-moment>${submission.createdAt}</td>
-                                <c:if test="${submission.form.getField('Decision') ne null}">
-                                    <c:if test="${submission.getValue('Decision') eq 'Approved'}">
-                                        <c:set var="statusColor" value="label-success"/>
-                                    </c:if>
-                                    <c:if test="${submission.getValue('Decision') eq 'Denied'}">
-                                        <c:set var="statusColor" value="label-danger"/>
-                                    </c:if>
-                                    <c:set var="approvalStatus" value="${submission.getValue('Decision')}"/>
-                                    <c:if test="${submission.coreState eq 'Draft'}">
-                                        <c:set var="approvalStatus" value="Pending Approval"/>
-                                    </c:if>
-                                    <td><span class="label ${statusColor}">${approvalStatus}</span></td>
-                                </c:if>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
+                <table id="pendingTable" class="table table-hover" width="100%">  
+                    <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                        The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>                  
                 </table>
             </div><!-- End Tab 1 -->
             <div role="tabpanel" class="tab-pane" id="tab_2">
-                <table class="table table-hover datatable">  
-                    <thead>
-                        <tr>
-                            <th>Item Requested</th>
-                            <th>Details</th>
-                            <th>Date Submitted</th>
-                            <th>Date Closed</th>
-                            <th>Decision</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${closedSubmissionsList}" var="submission">
-                            <c:set var="statusColor" value="label-primary"/>
-                            <tr>
-                                <td>${text.escape(submission.form.name)}</td>
-                                <td>
-                                    <a href="${bundle.kappLocation}?page=submission&id=${submission.id}">${text.escape(submission.label)}</a>
-                                </td>
-                                <td data-moment>${submission.submittedAt}</td>
-                                <td data-moment>${submission.closedAt}</td>
-                                <c:if test="${submission.form.getField('Decision') ne null}">
-                                    <c:if test="${submission.getValue('Decision') eq 'Approved'}">
-                                        <c:set var="statusColor" value="label-success"/>
-                                    </c:if>
-                                    <c:if test="${submission.getValue('Decision') eq 'Denied'}">
-                                        <c:set var="statusColor" value="label-danger"/>
-                                    </c:if>
-                                    <c:set var="approvalStatus" value="${submission.getValue('Decision')}"/>
-                                    <c:if test="${submission.coreState eq 'Draft'}">
-                                        <c:set var="approvalStatus" value="Pending Approval"/>
-                                    </c:if>
-                                    <td><span class="label ${statusColor}">${approvalStatus}</span></td>
-                                </c:if>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
+                <table id="closedTable" class="table table-hover" width="100%">  
+                    <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                        The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>                   
                 </table>
             </div><!-- End Tab 2 -->
         </div>

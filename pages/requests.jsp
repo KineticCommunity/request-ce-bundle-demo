@@ -6,6 +6,9 @@
 <c:set scope="request" var="draftSubmissionsList" value="${SubmissionHelper.retrieveRecentSubmissions('Service', 'Draft',1000)}"/>
 
 <bundle:layout page="${bundle.path}/layouts/layout.jsp">
+    <bundle:variable name="head">
+        <title>${text.escape(kapp.name)} Requests</title>
+    </bundle:variable>
     <section class="content-header">
         <span class="small-box-custom bg-aqua">
             <h1><i class="fa fa-shopping-cart"></i> My Requests</h1>
@@ -31,78 +34,21 @@
                 </li>
             </ul>
             <div class="tab-content"><div role="tabpanel" class="tab-pane active" id="tab_1">     
-                    <table class="table table-hover datatable">  
-                        <thead>
-                            <tr>
-                                <th>Item Requested</th>
-                                <th>Details</th>
-                                <th>Date Submitted</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${openSubmissionsList}" var="submission">
-                                <c:set var="statusColor" value="label-success"/>
-                                <tr>
-                                    <td>${text.escape(submission.form.name)}</td>
-                                    <td>
-                                        <a href="${bundle.kappLocation}?page=submission&id=${submission.id}">${text.escape(submission.label)}</a>
-                                    </td>
-                                    <td data-moment>${submission.createdAt}</td>
-                                    <td><span class="label ${statusColor}">${submission.coreState}</span></td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
+                    <table id="openTable" class="table table-hover" width="100%">  
+                        <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                            The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>
                     </table>
                 </div><!-- End Tab 1 -->
                 <div role="tabpanel" class="tab-pane" id="tab_2">
-                    <table class="table table-hover datatable">  
-                        <thead>
-                            <tr>
-                                <th>Item Requested</th>
-                                <th>Details</th>
-                                <th>Date Closed</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${closedSubmissionsList}" var="submission">
-                                    <c:set var="statusColor" value="label-primary"/>
-                                    <tr>
-                                        <td>${text.escape(submission.form.name)}</td>
-                                        <td>
-                                            <a href="${bundle.kappLocation}?page=submission&id=${submission.id}">${text.escape(submission.label)}</a>
-                                        </td>
-                                        <td data-moment>${submission.closedAt}</td>
-                                        <td><span class="label ${statusColor}">${submission.coreState}</span></td>
-                                    </tr>
-                            </c:forEach>
-                        </tbody>
+                    <table id="closedTable" class="table table-hover" width="100%">  
+                        <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                            The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>
                     </table>
                 </div><!-- End Tab 2 -->
                 <div role="tabpanel" class="tab-pane" id="tab_3">
-                    <table class="table table-hover datatable">  
-                        <thead>
-                            <tr>
-                                <th>Item Requested</th>
-                                <th>Details</th>
-                                <th>Date Submitted</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${draftSubmissionsList}" var="submission">
-                                <c:set var="statusColor" value="label-warning"/>
-                                <tr>
-                                    <td>${text.escape(submission.form.name)}</td>
-                                    <td>
-                                        <a href="${bundle.spaceLocation}/submissions/${submission.id}">${text.escape(submission.label)}</a>
-                                    </td>
-                                    <td data-moment>${submission.createdAt}</td>
-                                    <td><span class="label ${statusColor}">${submission.coreState}</span></td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
+                    <table id="draftTable" class="table table-hover" width="100%">  
+                        <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
+                            The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>                  
                     </table>
                 </div><!-- End Tab 3 -->
             </div>

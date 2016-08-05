@@ -16,7 +16,7 @@
         <span class="logo-lg">
             <c:choose>
                 <%-- Check to See if Company Logo / Name Attributes Exists --%>
-                <c:when test="${not empty space.getAttribute('Company Logo')}">
+                <c:when test="${not empty space.getAttribute('Company Logo') && not empty kapp.getAttribute('Company Logo')}">
                     <img class="pull-left" src="${BundleHelper.getLogo(kapp)}" alt="logo" style="display:block; max-height:40px; margin:5px;">
                     <strong class="pull-right">
                         <c:choose>
