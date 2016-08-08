@@ -36,7 +36,7 @@ the [BridgedResourceHelper Summary](#bridgedresourcehelper-summary) section.
             false);
     // If the request is scoped to a specific Kapp (space display pages are not)
     if (kapp != null && kapp.hasAttribute("Shared Bridged Resource Form Slug")) {
-        // Initialize the LockableSubmissionHelper
+        // Initialize the BridgedResourceHelper
         request.setAttribute("BridgedResourceHelper", 
             new BridgedResourceHelper(
                 request, 
