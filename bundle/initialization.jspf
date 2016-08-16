@@ -6,6 +6,7 @@
 <%@page import="com.kineticdata.core.web.bundles.BundleSubmissionComponent" %>
 <%@page import="com.kineticdata.core.authentication.Identity" %>
 <%@page import="org.slf4j.Logger" %>
+<%@page import="java.lang.reflect.Method"%>
 
 <%-- Bundle Java libraries --%>
 <%@page import="com.kineticdata.bundles.*" %>
@@ -199,4 +200,16 @@
         String themeBundlePathModifier = "/../" + kapp.getAttributeValue("Theme Bundle Path");
         request.setAttribute("themeBundlePathModifier", themeBundlePathModifier);
     }
+%>
+
+<%-- LocaleHelper --%>
+<%@include file="LocaleHelper.jspf"%>
+<%
+    request.setAttribute("LocaleHelper", new LocaleHelper(request));
+%>
+
+<%-- ObjectsHelper --%>
+<%@include file="ObjectsHelper.jspf"%>
+<%
+    request.setAttribute("ObjectsHelper", new ObjectsHelper());
 %>
