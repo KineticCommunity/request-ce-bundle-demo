@@ -1,8 +1,13 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="../bundle/initialization.jspf" %>
+<bundle:scriptpack>
+    <bundle:script src="${bundle.location}/js/taskActivity.js" />
+</bundle:scriptpack>
 <!-- The time line -->
 <c:if test="${empty submission}">
     <c:set var="submission" value="${Submissions.retrieve(param.id)}" scope="request"/>
+    <c:set var="changeHandlerName" value="${kapp.getAttributeValue('Change Request Handler')}" scope="request"/>
+    <c:set var="incidentHandlerName" value="${kapp.getAttributeValue('Incident Handler')}" scope="request"/>
 </c:if>
 
 <c:forEach var="run" items="${TaskRuns.find(submission)}">
@@ -21,7 +26,7 @@
             <li>
                 <i class="fa ${taskStatusIcon}"></i>
                 <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> Task Status: ${text.escape(task.status)} </span>
+                    <span class="time"><i class="fa fa-clock-o"></i> Task Status: <span class="task-status">${text.escape(task.status)}</span> </span>
                     <h3 class="timeline-header">${text.escape(task.name)}</h3>
                     <div class="timeline-body">
                         <dl>
@@ -55,6 +60,12 @@
                                     </c:if>
                                 </c:forEach>
                             </c:when>
+                            <c:when test="${task.defName eq changeHandlerName}">
+                                <div class="change-request" data-for="${task.resultsMap['Change Number']}"></div>
+                            </c:when>
+                            <c:when test="${task.defName eq incidentHandlerName}">
+                                <div class="incident" data-for="${task.resultsMap['Incident Number']}"></div>
+                            </c:when>
                             <c:otherwise>
                                 <c:if test="${not empty task.messages}">
                                     <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#messages-${task.id}">Read more</a>
@@ -78,21 +89,3 @@
         </li>
     </ul>
 </c:forEach>
-<script>
-$(function(){
-    $('td.status').each(function(){
-        var arr = $(this).html().replace("CREATE_","").replace("_"," ").toLowerCase().split(' ');
-        var result = "";
-        for (var x=0; x<arr.length; x++)
-            result+=arr[x].substring(0,1).toUpperCase()+arr[x].substring(1)+' ';
-        result = result.substring(0, result.length-1);
-        if ( result === "Complete" ){
-            $(this).parent('tr').addClass("bg-green");
-        }
-        if ( result === "In Progress" ){
-            $(this).parent('tr').addClass("bg-yellow");
-        } 
-        $(this).html(result);
-    });
-});
-</script>
