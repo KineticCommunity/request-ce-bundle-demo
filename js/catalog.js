@@ -60,46 +60,10 @@
             }
         })
     });
-
-
-
-    /**
-     * Applies the Jquery DataTables plugin to a rendered HTML table to provide
-     * column sorting and Moment.js functionality to date/time values.
-     *
-     * @param {String} tableId The id of the table element.
-     * @returns {undefined}
-     */
-//    function submissionsTable (tableId) {
-//        $('#'+tableId).DataTable({
-//            dom: '<"wrapper">t',
-//            columns: [ { defaultContent: ''}, null, null, null, null ],
-//            columnDefs: [
-//                {
-//                    render: function ( cellData, type, row ) {
-//                        var span = $('<a>').attr('href', 'javascript:void(0);');
-//                        var iso8601date = cellData;
-//                        $(span).text(moment(iso8601date).fromNow())
-//                                .attr('title', moment(iso8601date).format('MMMM Do YYYY, h:mm:ss A'))
-//                                .addClass('time-ago')
-//                                .data('toggle', 'tooltip')
-//                                .data('placement', 'top');
-//                        var td = $('#'+tableId+' td:contains('+cellData+')');
-//                        td.html(span);
-//                        return td.html();
-//                    },
-//                    targets: 'date'
-//                },
-//                {
-//                    orderable: false,
-//                    targets: 'nosort'
-//                }
-//            ]
-//        });
-//    }
+ 
     /*
      * DataTables
-     * These dynamicly created tables gerneraed from an ajax call located in the renderTable function.
+     * These dynamically created tables gerneraed from an ajax call located in the renderTable function.
      * The ajax call is configured to hit an endpoint in the partials file of the bundle that the kapp is pointed at.
      * The renderTable function has required and optional parameters.
      * 
@@ -109,7 +73,7 @@
      * type                         *OPTIONAL       (not including a type or including an empty sting will return submissions with a null type {as of core 1.0.6})
      * coreState                    *OPTIONAL       (this will return all submissions for the current kapp that match the core state)
      * serverSide                   *OPTIONAL       (for server side pagination)
-     *  length                      *OPTIONAL       (use with serverSide.  Sets the number of rows that are displayed on the load of the table. defaults to 10)
+     * length                       *OPTIONAL       (use with serverSide.  Sets the number of rows that are displayed on the load of the table. defaults to 10)
      */
     $(function(){
         currentId = getUrlParameters().page;
@@ -182,45 +146,17 @@
         }
     });
 
-    // Build Datatables if datatable class exists on a table. If empty, Display Empty Text 
-//    $(function(){
-//        // Make sure namespace exists
-//        bundle.submissions = bundle.submissions || {};
-//        bundle.submissions.tableObjects = bundle.submissions.tableObjects || {};
-//
-//        $('table.datatable').each(function(){
-//            var usesearch = $(this).hasClass("nosearch") ? false:true ;
-//            $(this).css("width:100%");
-//            var tabId = $(this).closest('div.tab-pane').attr('id');
-//            bundle.submissions.tableObjects[tabId] = $(this).DataTable({
-//                "paging": true,
-//                "lengthChange": false,
-//                "searching": usesearch,
-//                "order": [[ 3, "desc" ]],
-//                "info": true,
-//                "autoWidth": true,
-//                "scrollX": true
-//            });
-//        })
-//        $('td.dataTables_empty').html('None found. Check back soon!');
-//    });
-//
-//    // Redraw datatable on tab select to redraw columns
-//    $(function(){
-//        //$('ul.nav-tabs li').on('click',function(){
-//        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-//            var tabId = $(e.target).attr("href").substring(1);
-//            bundle.submissions.tableObjects[tabId].columns.adjust().draw();
-//        });
-//    })
-
     function renderTable(options){
         $.ajax({
             method: 'get',
             url: buildAjaxUrl(options),
             dataType: "json",
             contentType: 'application/json',
+            beforeSend: function(jqXHR, obj){
+                $(options.table).append('<div><i id="spinner" class="fa fa-cog fa-spin fa-3x" style="text-align:center;width:100%"/></div>');
+            },
             success: function(data, textStatus, jqXHR){
+                $('#spinner').remove();
                 // extend the object to format the dataTable.
                 records = $.extend(data, {
                     responsive: {breakpoints: [
