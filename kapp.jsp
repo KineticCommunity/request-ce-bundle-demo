@@ -17,10 +17,10 @@
 
             <%-- Set class for number of tiles displayed --%>
             <c:set var="tileCount" value="3" />
-            <c:if test="${BundleHelper.checkKappAndForm('admin','user-asset')}">
+            <c:if test="${BundleHelper.hasForm('admin','user-asset')}">
                 <c:set var="tileCount" value="${tileCount - 1}" />
             </c:if>
-            <c:if test="${BundleHelper.checkKappAndForm('knowledge','knowledge')}">
+            <c:if test="${BundleHelper.hasForm('knowledge','knowledge')}">
                 <c:set var="tileCount" value="${tileCount - 1}" />
             </c:if>
             <c:set scope="request" var="tileClass" value="col-sm-${tileCount}"/>
@@ -84,7 +84,7 @@
                         </div>
                     </div><!-- ./col -->
 
-                    <c:if test="${BundleHelper.checkKappAndForm('admin','user-asset')}">
+                    <c:if test="${BundleHelper.hasForm('admin','user-asset')}">
                         <c:set var="params" value="${BridgedResourceHelper.map()}"/>
                         <c:set target="${params}" property="User" value="${identity.username}"/>
                         <c:set scope="request" var="assetList" value="${BridgedResourceHelper.search('User Assets',params)}"/>
@@ -102,7 +102,7 @@
                             </div>
                         </div><!-- ./col -->
                     </c:if>
-                    <c:if test="${BundleHelper.checkKappAndForm('knowledge','knowledge')}">
+                    <c:if test="${BundleHelper.hasForm('knowledge','knowledge')}">
                         <c:set scope="request" var="rkmList" value=""/>
                         <div class="${tileClass}">
                             <!-- small box -->

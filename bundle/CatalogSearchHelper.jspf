@@ -34,16 +34,16 @@
             for (Form form : forms) {
                 // Calculate weight of the form
                 double weight = WeightHelper.weigh(queryParts, 
-                        // Form Name (most important)
-                        Arrays.asList(form.getName()), 
-                        // Form Keyword attributes
-                        form.getAttributeValues("Keyword"),
-                        // Form Description
-                        Arrays.asList(form.getDescription()),
-                        // For attributes corresponding to Kapp's Search Attribute attributes
-                        SearchAttributes.INSTANCE.apply(form),
-                        // Category Display names (least important)
-                        Lists.transform(form.getCategories(), CategoryNames.INSTANCE));
+                            // Form Name (most important)
+                            Arrays.asList(form.getName()), 
+                            // Form Keyword attributes
+                            form.getAttributeValues("Keyword"),
+                            // Form Description
+                            Arrays.asList(form.getDescription()),
+                            // For attributes corresponding to Kapp's Search Attribute attributes
+                            SearchAttributes.INSTANCE.apply(form),
+                            // Category Display names (least important)
+                            Lists.transform(form.getCategories(), CategoryNames.INSTANCE));
                 // If weight is > 0, all query parts were matched, so add form to results set
                 if (weight > 0){
                     results.add(new WeightedForm(form, weight));

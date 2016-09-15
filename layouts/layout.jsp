@@ -49,6 +49,9 @@
             <bundle:script src="${bundle.location}/js/review.js"/>
             <bundle:script src="${bundle.location}/libraries/AdminLTE-Sass/build/js/app.min.js"/>
         </bundle:scriptpack>
+        <script>
+            window.identity = '${identity.username}';
+        </script>
         <bundle:yield name="head"/>
         <style>
             <c:if test="${not empty kapp.getAttributeValue('Logo Height Px')}">
@@ -78,10 +81,5 @@
             </body>
         </c:otherwise>
     </c:choose>
-    <script>
-        window.identity = '${identity.username}';
-    </script>
+
 </html>
-<script>
-    window.identity = '${identity.username}';
-</script>

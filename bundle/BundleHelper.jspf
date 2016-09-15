@@ -125,7 +125,7 @@
         /**
          * Helper for Kapp with Form checks
          */
-        public boolean checkKappAndForm(String kapp, String form){
+        public boolean hasForm(String kapp, String form){
 
             boolean check = false;
             if(kapp.equals("admin")){

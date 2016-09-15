@@ -3,45 +3,69 @@
  * for the Kapp.
 **/
 (function($, _, moment){
+    /*----------------------------------------------------------------------------------------------
+     * COMMON INIALIZATION 
+     *   This code is executed when the Javascript file is loaded
+     *--------------------------------------------------------------------------------------------*/
+
+    // Ensure the BUNDLE global object exists
+    bundle = typeof bundle !== "undefined" ? bundle : {};
+    // Create your namespace
+    bundle.demo = bundle.demo || {};
+    // Create a scoped alias to simplify references to your namespace
+    var demo = bundle.demo;
+    
+    // UTILITY METHODS
+
+    /**
+     * Returns an Object with keys/values for each of the url parameters.
+     */
+    demo.getUrlParameters = function() {
+       var searchString = window.location.search.substring(1), params = searchString.split("&"), hash = {};
+       for (var i = 0; i < params.length; i++) {
+         var val = params[i].split("=");
+         hash[unescape(val[0])] = unescape(val[1]);
+       }
+       return hash;
+    };
+    
     var locale = window.navigator.userLanguage || window.navigator.language;
     moment.locale(locale);
 
     $(function(){
-
-      if (!$('.navbar-form .typeahead').length){
-        return;
-      }
-      var matcher = function(strs) {
-        return function findMatches(query, callback) {
-            var matches, substringRegex;
-            matches = [];
-            substrRegex = new RegExp(query, 'i');
-            $.each(strs, function(i, str) {
-              if (substrRegex.test(str)) {
-                matches.push(str);
-              }
-            });
-            callback(matches);
+        if (!$('.navbar-form .typeahead').length){
+             return;
+        }
+        var matcher = function(strs) {
+            return function findMatches(query, callback) {
+                var matches, substringRegex;
+                matches = [];
+                substrRegex = new RegExp(query, 'i');
+                $.each(strs, function(i, str) {
+                    if (substrRegex.test(str)) {
+                      matches.push(str);
+                    }
+                });
+                callback(matches);
+            };
         };
-      };
-      var formNames = [];
-      var forms = {};
-      $.get(window.bundle.apiLocation() + "/kapps/" + window.bundle.kappSlug() + "/forms", function( data ) {
-        forms = data.forms;
-        $.each(forms, function(i,val) {
-          formNames.push(val.name);
-          forms[val.name] = val;
+        var formNames = [];
+        var forms = {};
+        $.get(window.bundle.apiLocation() + "/kapps/" + window.bundle.kappSlug() + "/forms", function( data ) {
+            forms = data.forms;
+            $.each(forms, function(i,val) {
+                formNames.push(val.name);
+                forms[val.name] = val;
+            });
         });
-      });
-      $('.navbar-form .typeahead').typeahead({
-          highlight:true
+        $('.navbar-form .typeahead').typeahead({
+            highlight:true
         },{
-          name: 'forms',
-          source: matcher(formNames),
+            name: 'forms',
+            source: matcher(formNames),
         }).bind('typeahead:select', function(ev, suggestion) {
-          window.location.replace(window.bundle.kappLocation() + "/" + forms[suggestion].slug)
-      });
-
+            window.location.replace(window.bundle.kappLocation() + "/" + forms[suggestion].slug)
+        });
     });
 
     /**
@@ -76,8 +100,8 @@
      * length                       *OPTIONAL       (use with serverSide.  Sets the number of rows that are displayed on the load of the table. defaults to 10)
      */
     $(function(){
-        currentId = getUrlParameters().page;
-       
+        currentId = demo.getUrlParameters().page;
+
         /*  The dataTables that are built depend on the value of the page parameter in the url. 
          *  The the object sent to the renderTable function is extended with format options for the dataTable.
          */
@@ -137,7 +161,7 @@
                 serverSide: true,
             });
         }
-        
+
         /* We are using the page load to set some visual cues so the user know what tab they are on*/
         if(currentId === undefined){
             $('#home').addClass('active');
@@ -187,7 +211,7 @@
                     },
                 });
                 var table = $(options.table).DataTable(records);
-                
+
                 /* After the table has been built we are adding an html element that has a dropdown list so that a user can select a number of days back
                  * to retrieve the list from.
                  */
@@ -322,16 +346,6 @@
             $('form').notifie({type:'alert',severity:'info',message:'username or password not found'});
         };
     });
-    //  utility 
-    getUrlParameters = function() {
-       var searchString = window.location.search.substring(1), params = searchString.split("&"), hash = {};
-
-       for (var i = 0; i < params.length; i++) {
-         var val = params[i].split("=");
-         hash[unescape(val[0])] = unescape(val[1]);
-       }
-       return hash;
-    };
     
     $(function() {
         $('[data-moment]').each(function(index, item) {

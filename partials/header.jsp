@@ -1,7 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="../bundle/initialization.jspf" %>
 
-<c:if test="${BundleHelper.checkKappAndForm('admin','broadcast-alerts')}">
+<c:if test="${BundleHelper.hasForm('admin','broadcast-alerts')}">
     <c:set var="broadcastAlerts" value="${BridgedResourceHelper.search('Broadcast Alerts - All')}"/>
 </c:if>
 <c:set var="pendingApprovals" value="${SubmissionHelper.approvalAlertsSubmissions()}"/>

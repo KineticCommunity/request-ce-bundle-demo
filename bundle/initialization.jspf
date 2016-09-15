@@ -85,64 +85,6 @@
     request.setAttribute("CategoryHelper", new CategoryHelper());
 %>
 
-<%-- FilehubHelper --%>
-<%@include file="FilehubHelper.jspf"%>
-<%
-    // Declare the filehubHelper, which is referenced in the router.jspf file
-    FilehubHelper filehubHelper = null;
-    
-    /* TODO: Should there be a catch if any of the kapp attributes exist but have a blank string as a value?*/
-    // If the request is scoped to a specific Kapp (space display pages are not)
-    if (kapp != null && kapp.hasAttribute("Filehub Url")) {
-        // Initialize the filehub helper
-        filehubHelper = new FilehubHelper(kapp.getAttributeValue("Filehub Url"));
-        // Initialize the "Example" filestore
-        if (kapp.hasAttribute("Example Filestore Slug")) {
-            filehubHelper.addFilestore(
-                kapp.getAttributeValue("Example Filestore Slug"),
-                kapp.getAttributeValue("Example Filestore Key"),
-                kapp.getAttributeValue("Example Filestore Secret"),
-                new FilehubHelper.Authorizer() {
-                    @Override public boolean canAccess(HttpServletRequest request) {
-                        return true;
-                    }
-                },
-                new FilehubHelper.PathBuilder() {
-                    @Override public String buildPath(HttpServletRequest request) {
-                        //return request.getParameter("path");
-                        String path = request.getParameter("form")+
-                            "/"+request.getParameter("entry")+
-                            "/"+request.getParameter("field");
-                        if (request.getParameter("filename") != null) {
-                            path += "/"+request.getParameter("filename");
-                        }
-                        return path;
-                    }
-                }
-            );
-        }
-    }
-%>
-
-<%-- LockableSubmissionHelper --%>
-<%@include file="LockableSubmissionHelper.jspf"%>
-<%
-    // If the request is scoped to a specific Kapp (space display pages are not)
-    if (kapp != null && kapp.hasAttribute("Filehub Url")) {
-        // Initialize the LockableSubmissionHelper
-        LockableSubmissionHelper lockableSubmissionHelper = new LockableSubmissionHelper(request);
-        if (kapp.hasAttribute("Lockable Submission Delegation Attribute")) {
-            lockableSubmissionHelper.setDelegationAttribute(
-                kapp.getAttributeValue("Lockable Submission Delegation Attribute"));
-        }
-        if (kapp.hasAttribute("Lockable Submission Group Attribute")) {
-            lockableSubmissionHelper.setDelegationAttribute(
-                kapp.getAttributeValue("Lockable Submission Group Attribute"));
-        }
-        request.setAttribute("LockableSubmissionHelper", lockableSubmissionHelper);
-    }
-%>
-
 <%-- SubmissionHelper --%>
 <%@include file="SubmissionHelper.jspf"%>
 <%
@@ -151,9 +93,7 @@
 
 <%-- Setup themeBundlePathModifier if necessary --%>
 <%
-    Logger logger = LoggerFactory.getLogger("com.kineticdata.core.BundleInitialization");
     if (kapp != null && kapp.getAttributeValue("Theme Bundle Path") != null){
-        logger.debug("Theme Bundle Path: " +  kapp.getAttributeValue("Theme Bundle Path"));
         String themeBundlePathModifier = "/../" + kapp.getAttributeValue("Theme Bundle Path");
         request.setAttribute("themeBundlePathModifier", themeBundlePathModifier);
     }

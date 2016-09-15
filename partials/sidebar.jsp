@@ -37,41 +37,41 @@
                 </c:choose>
                 <!-- /.search form -->
             </li>
-            <li <c:if test="${activePage eq 'home'}">class="active"</c:if> >
+            <li <c:if test="${empty param['page']}">class="active"</c:if> >
                 <a href="${bundle.kappLocation}">
                     <i class="fa fa-home"></i> <span>Home</span>
                 </a>
             </li>
-            <li <c:if test="${activePage eq 'request'}">class="active"</c:if> >
+            <li <c:if test="${param['page'] eq 'requests'}">class="active"</c:if> >
                 <a href="${bundle.kappLocation}?page=requests">
                     <i class="fa fa-shopping-cart"></i> <span>My Requests</span>
                 </a>
             </li>
-            <li <c:if test="${activePage eq 'approval'}">class="active"</c:if> >
+            <li <c:if test="${param['page'] eq 'approvals'}">class="active"</c:if> >
                 <a href="${bundle.kappLocation}?page=approvals">
                     <i class="fa fa-thumbs-o-up"></i> <span>My Approvals</span>
                 </a>
             </li>
-            <li <c:if test="${activePage eq 'work-order'}">class="active"</c:if> >
+            <li <c:if test="${param['page'] eq 'workOrder'}">class="active"</c:if> >
                 <a href="${bundle.kappLocation}?page=workOrder">
                     <i class="fa fa-tasks"></i> <span>My Tasks</span>
                 </a>
             </li>
-            <c:if test="${BundleHelper.checkKappAndForm('admin','user-assets')}">
+            <c:if test="${BundleHelper.hasForm('admin','user-assets')}">
                 <li <c:if test="${param['type'] eq 'assets'}">class="active"</c:if> >
                     <a href="${bundle.kappLocation}?page=bridgedsubmissions&type=assets">
                         <i class="fa fa-thumbs-o-up"></i> <span>My Assets</span>
                     </a>
                 </li>
             </c:if>
-            <c:if test="${BundleHelper.checkKappAndForm('knowledge','knowledge')}">
-                <li <c:if test="${activePage eq 'approval'}">class="active"</c:if> >
+            <c:if test="${BundleHelper.hasForm('knowledge','knowledge')}">
+                <li <c:if test="${param['page'] eq 'approval'}">class="active"</c:if> >
                     <a href="${bundle.kappLocation}?page=#">
                         <i class="fa fa-questionmark"></i> <span>Knowledge Base</span>
                     </a>
                 </li>
             </c:if>
-            <li <c:if test="${activePage eq 'work-order'}">class="active"</c:if> >
+            <li <c:if test="${param['page'] eq 'work-order'}">class="active"</c:if> >
                 <a href="${bundle.spaceLocation}/${kapp.slug}/help">
                     <i class="fa fa-life-ring"></i> <span>Help</span>
                 </a>
@@ -99,7 +99,7 @@
                 </c:if>
             </c:forEach>
             <c:if test="${fn:toLowerCase(identity.user.getAttribute('Catalog Manager').value) eq 'true'}">
-                <li <c:if test="${activePage eq 'dashboard'}">class="active"</c:if> >
+                <li <c:if test="${param[page] eq 'dashboard'}">class="active"</c:if> >
                     <a href="${bundle.kappLocation}?page=dashboard">
                         <i class="fa fa-tachometer"></i> <span>Management Dashboard</span>
                     </a>
