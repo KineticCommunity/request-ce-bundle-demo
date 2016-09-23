@@ -32,10 +32,10 @@
     </json:array>
     <json:array name="data" var="submission" items="${submissionList}">
         <json:object>
-            <json:property name="Updated At" value="${submission.createdAt}"/>
-            <json:property name="Closed At" value="${submission.closedAt}"/>
-            <json:property name="Form" value="${submission.form.name}"/>
-            <json:property name="Submission" value="${submission.label}"/>
+            <json:property name="Updated At" value="${time.format(submission.createdAt)}"/>
+            <json:property name="Closed At" value="${time.format(submission.closedAt)}"/>
+            <json:property name="Form" value="${text.escape(submission.form.name)}"/>
+            <json:property name="Submission" value="${text.escape(submission.label)}"/>
             <json:property name="State" value="${submission.coreState}"/>
             <json:property name="Id" value="${submission.id}"/>
             <json:property name="Values" value="${submission.values}"/>

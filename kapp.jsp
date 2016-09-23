@@ -1,7 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="bundle/initialization.jspf" %>
 <%@include file="bundle/router.jspf" %>
-<c:set var="adminKapp" value="${space.getKapp(Text.defaultIfBlank(space.getAttributeValue('Admin Kapp Slug'),'admin'))}"/>
+<c:set var="adminKapp" value="${space.getKapp(Text.defaultIfBlank(space.getAttributeValues('Admin Kapp Slug'),'admin'))}"/>
 <c:choose>
     <c:when test="${identity.anonymous}">
         <c:set var="kapp" scope="request" value="${kapp}"/>
@@ -16,14 +16,17 @@
             <c:set scope="request" var="submissionsList" value="${SubmissionHelper.retrieveRecentSubmissions('Service', 'Submitted', 999)}"/>
 
             <%-- Set class for number of tiles displayed --%>
-            <c:set var="tileCount" value="3" />
+            <c:set var="tileCount" value="4" />
             <c:if test="${BundleHelper.hasForm('admin','user-asset')}">
                 <c:set var="tileCount" value="${tileCount - 1}" />
             </c:if>
             <c:if test="${BundleHelper.hasForm('knowledge','knowledge')}">
                 <c:set var="tileCount" value="${tileCount - 1}" />
             </c:if>
-            <c:set scope="request" var="tileClass" value="col-sm-${tileCount}"/>
+            <c:if test="${not empty kapp.getForm('help')}">
+                <c:set var="tileCount" value="${tileCount - 1}" />
+            </c:if>
+            <c:set scope="request" var="tileClass" value="col-md-${tileCount}"/>
             <%-- Header --%>
             <section class="content-header">
                 <h1>
@@ -118,21 +121,21 @@
                             </div>
                         </div><!-- ./col -->
                     </c:if>
-
-                    <div class="${tileClass}">
-                        <!-- small box -->
-                        <div class="small-box bg-orange">
-                            <div class="inner">
-                                <h3>Help</h3>
-                                <p>&nbsp;</p>
+                    <c:if test="${not empty kapp.getForm('help')}">
+                        <div class="${tileClass}">
+                            <!-- small box -->
+                            <div class="small-box bg-orange">
+                                <div class="inner">
+                                    <h3>Help</h3>
+                                    <p>&nbsp;</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-life-ring"></i>
+                                </div>
+                                <a href="${bundle.spaceLocation}/${kapp.slug}/help" class="small-box-footer">Ask a Question <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
-                            <div class="icon">
-                                <i class="fa fa-life-ring"></i>
-                            </div>
-                            <a href="${bundle.spaceLocation}/${kapp.slug}/help" class="small-box-footer">Ask a Question <i class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div><!-- ./col -->
-
+                        </div><!-- ./col -->
+                    </c:if>
                 </div><!-- /.row -->
 
                 <div class="row">

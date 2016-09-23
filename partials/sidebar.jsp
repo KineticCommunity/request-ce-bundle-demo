@@ -64,18 +64,20 @@
                     </a>
                 </li>
             </c:if>
-            <c:if test="${BundleHelper.hasForm('knowledge','knowledge')}">
+            <c:if test="${not empty kapp.getForm('help')}">
                 <li <c:if test="${param['page'] eq 'approval'}">class="active"</c:if> >
                     <a href="${bundle.kappLocation}?page=#">
                         <i class="fa fa-questionmark"></i> <span>Knowledge Base</span>
                     </a>
                 </li>
             </c:if>
-            <li <c:if test="${param['page'] eq 'work-order'}">class="active"</c:if> >
-                <a href="${bundle.spaceLocation}/${kapp.slug}/help">
-                    <i class="fa fa-life-ring"></i> <span>Help</span>
-                </a>
-            </li>
+            <c:if test="${BundleHelper.hasForm(kapp,'knowledge')}">
+                <li <c:if test="${param['page'] eq 'work-order'}">class="active"</c:if> >
+                    <a href="${bundle.spaceLocation}/${kapp.slug}/help">
+                        <i class="fa fa-life-ring"></i> <span>Help</span>
+                    </a>
+                </li>
+            </c:if>
             <li class="header">CATEGORIES</li>
             <%-- For each of the categories --%>
             <c:forEach items="${CategoryHelper.getCategories(kapp)}" var="category">

@@ -9,7 +9,7 @@
     <ul class="timeline">
         <!-- timeline time label -->
         <li class="time-label">
-            <span data-moment class="bg-red">${submission.submittedAt}</span>
+            <span data-moment class="bg-red">${time.format(submission.submittedAt)}</span>
         </li>
         <!-- /.timeline-label -->
         <!-- timeline item -->
@@ -26,9 +26,9 @@
                     <div class="timeline-body">
                         <dl>
                             <dt>Started at: </dt>
-                            <dd data-moment-short>${task.createdAt}</dd>
+                            <dd data-moment-short>${time.format(task.createdAt)}</dd>
                             <dt>Last Updated at: </dt>
-                            <dd data-moment-short>${task.updatedAt}</dd>
+                            <dd data-moment-short>${time.format(task.updatedAt)}</dd>
                         </dl>
                         <c:choose>
                             <c:when test="${task.name eq 'Create AWS Stack Template'}">

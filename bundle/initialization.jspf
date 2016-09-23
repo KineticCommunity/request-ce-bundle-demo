@@ -91,14 +91,6 @@
     request.setAttribute("SubmissionHelper", new SubmissionHelper(request));
 %>
 
-<%-- Setup themeBundlePathModifier if necessary --%>
-<%
-    if (kapp != null && kapp.getAttributeValue("Theme Bundle Path") != null){
-        String themeBundlePathModifier = "/../" + kapp.getAttributeValue("Theme Bundle Path");
-        request.setAttribute("themeBundlePathModifier", themeBundlePathModifier);
-    }
-%>
-
 <%-- ObjectsHelper --%>
 <%@include file="ObjectsHelper.jspf"%>
 <%

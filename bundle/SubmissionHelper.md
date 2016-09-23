@@ -54,6 +54,8 @@ the [SubmissionHelper Summary] section below.
 | `List<Submission> retrieveRecentSubmissions(String type, String coreState, Integer number)`   | Overloaded method that returns a specific sized list of submissions of a given type and core state within the last 30 days.   |
 | `List<Submission> retrieveRecentSubmissions(String type, String coreState, Integer number)`   | Overloaded method that returns a specific sized list of submissions of a given type and core state within the last 30 days.   |
 | `List<~> retrieveRecentSubmissionsByKapp(String searchKapp, String coreState, Integer number)`| Returns a specific sized list of Submissions for a given kapp and core state with in the last 30 days.                        |
+| `List<Submission> retrieveDraftApprovals()`                                                   | Returns a submissions list of type Approval with the core state of Draft and the Assigned Individual field = logged in user.  |
+| `List<Submission> retireveServiceReviews(String formSlug)`                                    | Returns a list of submissions for the form with a slug of service-review and a the Form Slug field matches the passed in form.|
 | `List<Submission> categorySubmissions(String category)`                                       | Returns a list of 5 submissions with a core state of Draft or Submitted for a specified category.                             |
 
 ---

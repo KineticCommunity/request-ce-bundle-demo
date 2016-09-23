@@ -23,11 +23,39 @@
          * Returns a list of links to display in the header, which are defined as JSON in the 
          * Kapps's "Header Navigation List" attribute. If Kapp is null, checks looks at the Space's
          * "Header Navigation List" attribute. 
-         *
-         * @return List<HeaderNavigationLink> List of link objects
          * 
-         * not used in bundle!!!
+         * Sample "Header Navigation List" value:
+         * [
+         *   {
+         *       "Name": "Link Name",
+         *       "Path": "http://www.example.com"
+         *   },
+         *   {
+         *       "Name": "Link Name",
+         *       "Kapp": "Optional Kapp Slug" // Defaults to Current Kapp
+         *   },
+         *   {
+         *       "Name": "Link Name",
+         *       "Kapp": "Optional Kapp Slug" // Defaults to Current Kapp
+         *       "Page": "Optional Page File Name"
+         *   }
+         * ]
+         * 
+         * Example useage:
+         *  <c:catch var="headerNavigationError">
+         *      <c:forEach items="${BundleHelper.headerNavigation}" var="link">
+         *          <li>
+         *              <a href="${link.path}">${link.name}</a>
+         *          </li>
+         *      </c:forEach>
+         *  </c:catch>
+         *  <c:if test="${headerNavigationError ne null}">
+         *      <li class="alert alert-danger">${'Error'}</li>
+         *  </c:if>
+         * 
+         * @return List<HeaderNavigationLink> List of link objects!
          */
+
         public List<HeaderNavigationLink> getHeaderNavigation(){
             // Create container to hold links
             List<HeaderNavigationLink> headerNavigationLinks = new ArrayList<>();
@@ -47,16 +75,34 @@
                 for (LinkedHashMap link : headerNavigation){
                     // If link has a Name, build the link
                     if (link.get("Name") != null){
-                        // Start path with the space location
-                        String path = this.bundle.getSpaceLocation() + "/";
-                        // If link specifies a Kapp, use that Kapp, otherwise use current Kapp
-                        path += link.get("Kapp") != null ? link.get("Kapp") : this.kapp.getSlug();
-                        // If link specified a Page, use that Page
-                        if (link.get("Page") != null){
-                            path += "?page=" + link.get("Page");
+                        if (link.get("Path") != null){
+                            // Add link to path to result list
+                            headerNavigationLinks.add(
+                                    new HeaderNavigationLink(
+                                            (String)link.get("Name"), 
+                                            (String)link.get("Path")));
                         }
-                        // Add link to result list
-                        headerNavigationLinks.add(new HeaderNavigationLink((String)link.get("Name"), path));
+                        else {
+                            // Start path with the space location
+                            String path = this.bundle.getSpaceLocation() + "/";
+                            // If Kapp is specified, add specified kapp to path
+                            if (link.get("Kapp") != null){
+                                path += link.get("Kapp");
+                            }
+                            // Else if in a kapp context, use current kapp
+                            else if (this.kapp != null){
+                                path += this.kapp.getSlug();
+                            }
+                            // If Page is specified, add specified page to the path
+                            if (link.get("Page") != null){
+                                path += "?page=" + link.get("Page");
+                            }
+                            // Add link to result list
+                            headerNavigationLinks.add(
+                                    new HeaderNavigationLink(
+                                            (String)link.get("Name"), 
+                                            path));
+                        }
                     }
                 }
             }

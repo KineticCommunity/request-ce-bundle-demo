@@ -121,7 +121,11 @@
             return submissionComponent.searchByKapp(searchKappObj, searchOptions);
         };
 
-        public List<Submission> approvalAlertsSubmissions() {
+        /* This method returns a list of submissions for forms with type Approval that are in a core state of Draft. 
+         * The logged in user's username needs to match the value in the Assingen Individual field on the form.
+         * This is used to build a list for Approvers to know what needs to be completed.
+         */
+        public List<Submission> retrieveDraftApprovals() {
             com.kineticdata.core.authentication.Identity identity =
                 (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
 
@@ -134,14 +138,21 @@
             return submissionComponent.searchByKapp(kapp, searchOptions);
         }
 
-        public List<Submission> serviceReviewSubmissions(String formSlug) {
+        /* This method returns a list of submissions the form with a slug of service-reviews. 
+         * The Form Slug must be provided to get the submissions for that form using the Form Slug field on the service-reviews form.
+         * This is used on the categoy pages and the search page to show users reviews of a specifice form.
+         */
+        public List<Submission> retrieveServiceReviews(String formSlug) {
             java.util.Map<String,String[]> searchOptions = new java.util.HashMap<>();
             searchOptions.put("limit", new String[] {"1000"});
             searchOptions.put("values[Form Slug]", new String[] {formSlug});
 
-            return submissionComponent.searchByForm(kapp.getForm( new String("service-reviews") ), searchOptions);
+            return submissionComponent.searchByForm(kapp.getForm("service-reviews"), searchOptions);
         }
 
+        /* Returns a list of the first 5 submissions that have a core state of Draft or Submitted that belong to the provided category. 
+         * This is used on the category page to build up the submissions that are displayed in the panel on the right hand side.
+         */
         public List<Submission> categorySubmissions(String category) {
             com.kineticdata.core.authentication.Identity identity =
                 (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");

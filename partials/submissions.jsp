@@ -41,7 +41,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
-                        <td data-moment>${submission.createdAt}</td>
+                        <td data-moment>${time.format(submission.createdAt)}</td>
                         <td><span class="label ${statusColor}">${submission.coreState}</span></td>
                     </tr>
                 </c:forEach>

@@ -7,7 +7,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="../bundle/initialization.jspf" %>
 
-<c:set var="formReviews" value="${SubmissionHelper.serviceReviewSubmissions(form.slug)}"/>
+<c:set var="formReviews" value="${SubmissionHelper.retrieveServiceReviews(form.slug)}"/>
 <c:set var="reviewsTotal" value="${0}"/>
 <c:forEach var="submission" items="${formReviews}">
     <c:set var="reviewsTotal" value="${reviewsTotal + submission.getValue('Rating')}" />
@@ -88,7 +88,7 @@
                     <div class='comment-text'>
                         <span class="username">
                             ${space.getUser(review.createdBy).displayName} | <div class="star star-existing" data-rating="${review.getValue('Rating')}"></div>
-                            <span class='text-muted pull-right'>${review.createdAt}</span>
+                            <span data-moment class='text-muted pull-right'>${time.format(review.createdAt)}</span>
                         </span><!-- /.username -->
                         ${text.escape(review.getValue('Review'))}
                     </div><!-- /.comment-text -->

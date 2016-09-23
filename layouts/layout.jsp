@@ -18,16 +18,8 @@
             <bundle:style src="${bundle.location}/libraries/bootstrap/css/bootstrap.min.css"/>   
             <bundle:style src="${bundle.location}/libraries/jquery-datatables/media/css/jquery.dataTables.css" />
             <bundle:style src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/css/responsive.dataTables.css" />
-          
             <bundle:style src="${bundle.location}/libraries/notifie/jquery.notifie.css"/>
-            <c:choose>
-                <c:when test="${not empty themeBundlePathModifier}">
-                    <bundle:style src="${bundle.location}${themeBundlePathModifier}/css/master.css"/>
-                </c:when>
-                <c:otherwise>
-                    <bundle:style src="${bundle.location}/libraries/AdminLTE-Sass/build/master.css"/>
-                </c:otherwise>
-            </c:choose>
+            <bundle:style src="${bundle.location}/libraries/AdminLTE-Sass/build/master.css"/>
             <bundle:style src="${bundle.location}/css/custom.css"/>
             <bundle:style src="${bundle.location}/libraries/kd-typeahead/kd-typeahead.css"/>
         </bundle:stylepack>
@@ -45,8 +37,6 @@
             <bundle:script src="${bundle.location}/libraries/notifie/jquery.notifie.js"/>
             <bundle:script src="${bundle.location}/libraries/typeahead/typeahead.min.js"/>
             <bundle:script src="${bundle.location}/js/catalog.js"/>
-            <bundle:script src="${bundle.location}/js/locking.js" />
-            <bundle:script src="${bundle.location}/js/review.js"/>
             <bundle:script src="${bundle.location}/libraries/AdminLTE-Sass/build/js/app.min.js"/>
         </bundle:scriptpack>
         <script>
@@ -81,5 +71,4 @@
             </body>
         </c:otherwise>
     </c:choose>
-
 </html>

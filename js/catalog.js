@@ -88,18 +88,19 @@
     /*
      * DataTables
      * These dynamically created tables gerneraed from an ajax call located in the renderTable function.
-     * The ajax call is configured to hit an endpoint in the partials file of the bundle that the kapp is pointed at.
+     * The ajax call is configured to hit an endpoint in the partials file in the bundle of the current kapp.
      * The renderTable function has required and optional parameters.
+     * The dataTables are initialized int the on load function at the bottom of the file.
      * 
      * ATTRIBTUES: 
-     * table                        *REQUIRED       (this will be id of the table element in the html file that the dataTable will be rendered in)
-     * jsonFileName                 *REQUIRED       (the file name that has the json payload for the dataTable)
-     * type                         *OPTIONAL       (not including a type or including an empty sting will return submissions with a null type {as of core 1.0.6})
-     * coreState                    *OPTIONAL       (this will return all submissions for the current kapp that match the core state)
-     * serverSide                   *OPTIONAL       (for server side pagination)
-     * length                       *OPTIONAL       (use with serverSide.  Sets the number of rows that are displayed on the load of the table. defaults to 10)
+     * table                    *REQUIRED       (this will be id of the table element in the html file that the dataTable will be rendered in)
+     * jsonFileName             *REQUIRED       (the file name that has the json payload for the dataTable)
+     * type                     *OPTIONAL       (not including a type or including an empty sting will return submissions with a null type {as of core 1.0.5})
+     * coreState                *OPTIONAL       (this will return all submissions for the current kapp that match the core state)
+     * serverSide               *OPTIONAL       (for server side pagination)
+     * length                   *OPTIONAL       (use with serverSide.  Sets the number of rows that are displayed on the load of the table. defaults to 10)
      */
-    $(function(){
+    function initializeTable(){
         currentId = demo.getUrlParameters().page;
 
         /*  The dataTables that are built depend on the value of the page parameter in the url. 
@@ -161,14 +162,7 @@
                 serverSide: true,
             });
         }
-
-        /* We are using the page load to set some visual cues so the user know what tab they are on*/
-        if(currentId === undefined){
-            $('#home').addClass('active');
-        }else{
-            $('#'+currentId).addClass('active');
-        }
-    });
+    };
 
     function renderTable(options){
         $.ajax({
@@ -340,14 +334,20 @@
         return statusColor;
     }
     
-    // Display error message if authentication error is found in URL.  This happens if login credentials fail.
+  
     $(function(){
-        if(window.location.search.substring(1).indexOf('authentication_error') !== -1){
-            $('form').notifie({type:'alert',severity:'info',message:'username or password not found'});
-        };
+
     });
     
     $(function() {
+        // Initialize, with seed values, the dataTables that are used on the approval, request and work order pages 
+        initializeTable();
+        
+        // Display error message if authentication error is found in URL.  This happens if login credentials fail.
+        if(window.location.search.substring(1).indexOf('authentication_error') !== -1){
+            $('form').notifie({type:'alert',severity:'info',message:'username or password not found'});
+        };
+        
         $('[data-moment]').each(function(index, item) {
             var element = $(item);
             element.html(moment(element.text()).format('MMMM Do YYYY, h:mm:ss A'));

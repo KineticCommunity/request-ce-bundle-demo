@@ -51,6 +51,7 @@
         </c:if>
         <section class="content">
             <c:if test="${param.review != null && pages.size() > 1}">
+                <%-- This import added bootstrap tabs to the review form where each page is in a different tab --%>
                 <c:import url="partials/review.jsp" charEncoding="UTF-8"></c:import>
             </c:if>
             <div class="errors"></div>

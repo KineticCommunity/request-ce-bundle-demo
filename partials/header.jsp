@@ -4,7 +4,7 @@
 <c:if test="${BundleHelper.hasForm('admin','broadcast-alerts')}">
     <c:set var="broadcastAlerts" value="${BridgedResourceHelper.search('Broadcast Alerts - All')}"/>
 </c:if>
-<c:set var="pendingApprovals" value="${SubmissionHelper.approvalAlertsSubmissions()}"/>
+<c:set var="pendingApprovals" value="${SubmissionHelper.retrieveDraftApprovals()}"/>
 <header class="main-header">
     <!-- Logo -->
     <a href="${bundle.kappLocation}" class="logo">
@@ -168,7 +168,7 @@
                                     <i class="fa fa-user fa-5x fa-inverse img-circle" alt="User Image"></i>
                                     <p>
                                         ${text.escape(text.trim(identity.displayName, identity.username))} 
-                                        <small>Member since <span data-moment-short>${identity.user.createdAt}</span></small>
+                                        <small>Member since <span data-moment-short>${time.format(identity.user.createdAt)}</span></small>
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->
