@@ -33,24 +33,32 @@
                     <a href="#tab_3" data-toggle="tab" role="tab" aria-expanded="false">Draft</a>
                 </li>
             </ul>
-            <div class="tab-content"><div role="tabpanel" class="tab-pane active" id="tab_1">     
-                    <table id="openTable" class="table table-hover" width="100%">  
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab_1"> 
+                    <c:set scope="request" var="tableId" value="openTable" />
+                    <c:import url="${bundle.path}/partials/dateRangeDropdown.jsp" charEncoding="UTF-8"/>
+                    <table id="${tableId}" class="table table-hover" width="100%">  
                         <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
                             The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>
                     </table>
                 </div><!-- End Tab 1 -->
                 <div role="tabpanel" class="tab-pane" id="tab_2">
-                    <table id="closedTable" class="table table-hover" width="100%">  
+                    <c:set scope="request" var="tableId" value="closedTable" />
+                    <c:import url="${bundle.path}/partials/dateRangeDropdown.jsp" charEncoding="UTF-8"/>
+                    <table id="${tableId}" class="table table-hover" width="100%">  
                         <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
                             The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>
                     </table>
                 </div><!-- End Tab 2 -->
                 <div role="tabpanel" class="tab-pane" id="tab_3">
-                    <table id="draftTable" class="table table-hover" width="100%">  
+                    <c:set scope="request" var="tableId" value="draftTable" />
+                    <c:import url="${bundle.path}/partials/dateRangeDropdown.jsp" charEncoding="UTF-8"/>
+                    <table id="${tableId}" class="table table-hover" width="100%">  
                         <%--This Table is build using DataTables, the width is requiered because of the way dataTables renders.
                             The code for this table can be found in catlog.js renderTable() with the table property that matches the table id.--%>                  
                     </table>
                 </div><!-- End Tab 3 -->
+            <i id="spinner" class="fa fa-cog fa-spin fa-3x" style="text-align:center;width:100%;margin-top:15%;"></i> 
             </div>
         </div>
     </section>
