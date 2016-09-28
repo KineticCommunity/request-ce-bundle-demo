@@ -4,7 +4,7 @@
     <c:forEach items="${sidebarSubCat.getSubcategories()}" var="sidebarSubCategory">
         <c:if test="${not sidebarSubCategory.isEmpty()}">
             <li class="<c:if test="${param['category'] eq sidebarSubCategory.slug}">active</c:if>" >
-                <a href="${bundle.kappLocation}?page=category&category=${text.escape(sidebarSubCategory.slug)}">
+                <a class="<c:if test="${category.hasNonEmptySubcategories()}"> rotate</c:if>" href="${bundle.kappLocation}?page=category&category=${text.escape(sidebarSubCategory.slug)}">
                     <i class="fa ${category.getAttributeValue('Icon')}"></i><span>${text.escape(sidebarSubCategory.name)}</span>
                     <c:choose>
                         <c:when  test="${sidebarSubCategory.hasNonEmptySubcategories()}">

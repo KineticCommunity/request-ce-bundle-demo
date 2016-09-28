@@ -1,19 +1,8 @@
-$(function(){
-  var payload = JSON.stringify({"values": {"Search Query": bundle.urlParam('q'),"Results Found": $('#resultsFound').val()}});
-  $.ajax({
-      method: 'POST',
-      url: 'app/api/v1/kapps/' + bundle.kappSlug() + '/forms/portal-searches/submissions?submit=true',
-      dataType: "json",
-      data:   payload,
-      contentType: "application/json",
-      
-      // If form creation was successful run this code
-      success: function(response, textStatus, jqXHR){
-        console.log('Search Result Added');
-      },
-      // If there was an error, show the error
-      error: function(jqXHR, textStatus, errorThrown){
-        console.log('Search Submission Failed');
-      }
-  });
-});
+(function(){
+    /* On load of the search.jsp page bring focus back to the search input and add a space to the end of the text.
+     * This will allow the user to add addtional search terms to the query for a more specific search.
+     */
+    $(function(){
+        $('#sidebar-search input:nth-child(2)').focus().val($('#sidebar-search input:nth-child(2)').val()+" ");
+    });
+})();

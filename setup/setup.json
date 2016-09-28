@@ -1,0 +1,272 @@
+{
+    "spaceAttributeDefinitions": [
+        {
+            "name": "Admin Kapp Slug",
+            "allowsMultiple": false,
+            "required": true,
+            "description": "The slug of the Admin Kapp. Used by other Kapps to access the Admin Kapp."
+        }
+    ],
+    "kappAttributeDefinitions": [
+        {
+            "name": "Task Server Url",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This is required to allow Request CE to connect to Task. Example: http://localhost:8080/kinetic-task."
+        },
+        {
+            "name": "Task Source Name",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This value must match the value under Sources in Task (in the Task managment console look under the Admin tab to find sources). Example: CE Sources."
+        },
+        {
+            "name": "Filehub Url",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This is requred to use FileHub.  The URL to the Kinetic Filehub application.  Example: https://acme.com/kinetic-filehub."
+        },
+         {
+            "name": "Filestore Slug",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This is requred to use FileHub.  The slug of the desired filestore configured in Kinetic Filehub."
+        },
+        {
+            "name": "Filestore Key",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This is requred to use FileHub.  The key for an access key associated to the specified filestore."
+        },
+        {
+            "name": "Filestore Secret",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This is requred to use FileHub.  The secret associated to the specified key."
+        },
+        {
+            "name": "Lockable Submission Delegation Attribute",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This should be set to the name of the User attribute definition that corresponds to assignment delegation, or left blank if delegation is not being used."
+        },
+        {
+            "name": "Lockable Submission Group Attribute",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This should be set to the name of the User attribute definition that corresponds to groups, or left blank if groups are not being managed by User attributes."
+        },
+        {
+            "name": "Shared Bridged Resource Form Slug",
+            "allowsMultiple": true,
+            "required": true,
+            "description": "The slug of the form that is used to define shared bridged resources.",
+            "values": ["shared-resources"]
+        }
+    ],
+    "bridges": [
+        {
+            "name": "Kinetic Core",
+            "status": "Active",
+            "url": "http://localhost:8080/kinetic-bridgehub/app/api/v1/bridges/kinetic-core/"
+        }
+    ],
+    "forms": [
+                {
+            "anonymous": false,
+            "attributes": [],
+            "bridgedResources": [
+              {
+                "model": "Datastore - Broadcast Alerts",
+                "name": "Broadcast Alerts - All",
+                "order": [],
+                "parameters": [],
+                "qualification": "All",
+                "status": "Active"
+              }
+            ],
+            "categorizations": [],
+            "createdAt": "2016-06-03T21:44:02.964Z",
+            "createdBy": "james.davies@kineticdata.com",
+            "customHeadContent": null,
+            "description": "",
+            "name": "Shared Resources",
+            "notes": null,
+            "pages": [
+              {
+              "advanceCondition": null,
+              "displayCondition": null,
+              "displayPage": null,
+              "elements": [
+                {
+                  "type": "field",
+                  "name": "Alerts",
+                  "label": "Alerts",
+                  "key": "f1",
+                  "defaultValue": null,
+                  "defaultResourceName": null,
+                  "visible": true,
+                  "enabled": true,
+                  "required": false,
+                  "requiredMessage": null,
+                  "omitWhenHidden": null,
+                  "pattern": null,
+                  "constraints": [],
+                  "events": [],
+                  "renderAttributes": {},
+                  "dataType": "string",
+                  "renderType": "dropdown",
+                  "choicesResourceName": "Broadcast Alerts - All",
+                  "choicesRunIf": null,
+                  "choices": {
+                    "label": "${resources('Broadcast Alerts - All:Message')}",
+                    "value": "${resources('Broadcast Alerts - All:Message')}"
+                  }
+                },
+                {
+                  "type": "button",
+                  "label": "Submit",
+                  "name": "Submit Button",
+                  "visible": true,
+                  "enabled": true,
+                  "renderType": "submit-page",
+                  "renderAttributes": {}
+                }
+              ],
+              "events": [],
+              "name": "Page 1",
+              "renderType": "submittable",
+              "type": "page"
+            }
+          ],
+          "securityPolicies": [],
+          "slug": "shared-resources",
+          "status": "Active",
+          "submissionLabelExpression": null,
+          "type": "Console",
+          "updatedAt": "2016-06-09T18:51:19.269Z",
+          "updatedBy": "demo.taskman@kineticdata.com"
+        },
+        {
+        "anonymous": false,
+        "attributes": [],
+        "bridgedResources": [],
+        "categorizations": [],
+        "createdAt": "2016-02-12T20:41:42.885Z",
+        "createdBy": "user@kineticdata.com",
+        "customHeadContent": null,
+        "description": "Keeps track of what's being searched for in the Catalog",
+        "name": "Service Reviews",
+        "notes": "a",
+        "pages": [
+          {
+            "advanceCondition": null,
+            "displayCondition": null,
+            "displayPage": null,
+            "elements": [
+              {
+                "type": "field",
+                "name": "Form Name",
+                "label": "Form Name",
+                "key": "f2",
+                "defaultValue": null,
+                "defaultResourceName": null,
+                "visible": true,
+                "enabled": true,
+                "required": false,
+                "requiredMessage": null,
+                "pattern": null,
+                "constraints": [],
+                "events": [],
+                "renderAttributes": {},
+                "dataType": "string",
+                "renderType": "text",
+                "rows": 1,
+                "omitWhenHidden": null
+              },
+              {
+                "type": "field",
+                "name": "Form Slug",
+                "label": "Form Slug",
+                "key": "f3",
+                "defaultValue": null,
+                "defaultResourceName": null,
+                "visible": true,
+                "enabled": true,
+                "required": false,
+                "requiredMessage": null,
+                "pattern": null,
+                "constraints": [],
+                "events": [],
+                "renderAttributes": {},
+                "dataType": "string",
+                "renderType": "text",
+                "rows": 1,
+                "omitWhenHidden": null
+              },
+              {
+                "type": "field",
+                "name": "Rating",
+                "label": "Rating",
+                "key": "f4",
+                "defaultValue": null,
+                "defaultResourceName": null,
+                "visible": true,
+                "enabled": true,
+                "required": false,
+                "requiredMessage": null,
+                "pattern": null,
+                "constraints": [],
+                "events": [],
+                "renderAttributes": {},
+                "dataType": "string",
+                "renderType": "text",
+                "rows": 1,
+                "omitWhenHidden": null
+              },
+              {
+                "type": "field",
+                "name": "Review",
+                "label": "Review",
+                "key": "f5",
+                "defaultValue": null,
+                "defaultResourceName": null,
+                "visible": true,
+                "enabled": true,
+                "required": false,
+                "requiredMessage": null,
+                "pattern": null,
+                "constraints": [],
+                "events": [],
+                "renderAttributes": {},
+                "dataType": "string",
+                "renderType": "text",
+                "rows": 1,
+                "omitWhenHidden": null
+              },
+              {
+                "type": "button",
+                "label": "Submit",
+                "name": "Submit Button",
+                "visible": true,
+                "enabled": true,
+                "renderType": "submit-page",
+                "renderAttributes": {}
+              }
+            ],
+            "events": [],
+            "name": "Search Page",
+            "renderType": "submittable",
+            "type": "page"
+          }
+        ],
+        "securityPolicies": [],
+        "slug": "service-reviews",
+        "status": "Active",
+        "submissionLabelExpression": "${values('Form Slug')} - ${values('Rating')}",
+        "type": "Console",
+        "updatedAt": "2016-08-30T15:07:04.839Z",
+        "updatedBy": "demo.taskman@kineticdata.com"
+      }
+    ]
+}

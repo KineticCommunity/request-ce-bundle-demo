@@ -1,10 +1,10 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="../bundle/initialization.jspf" %>
-<c:set var="adminKapp" value="${space.getKapp(Text.defaultIfBlank(space.getAttributeValue('Admin Kapp Slug'),'admin'))}"/>
-<c:if test="${BundleHelper.checkKappAndForm('admin','broadcast-alerts')}">
+
+<c:if test="${BundleHelper.hasForm('admin','broadcast-alerts')}">
     <c:set var="broadcastAlerts" value="${BridgedResourceHelper.search('Broadcast Alerts - All')}"/>
 </c:if>
-<c:set var="pendingApprovals" value="${SubmissionHelper.approvalAlertsSubmissions()}"/>
+<c:set var="pendingApprovals" value="${SubmissionHelper.retrieveDraftApprovals()}"/>
 <header class="main-header">
     <!-- Logo -->
     <a href="${bundle.kappLocation}" class="logo">
@@ -14,34 +14,14 @@
         </span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">
+            <i class="fa fa-home"></i> 
             <c:choose>
-                <%-- Check to See if Company Logo / Name Attributes Exists --%>
-                <c:when test="${not empty space.getAttribute('Company Logo')}">
-                    <img class="pull-left" src="${BundleHelper.getLogo(kapp)}" alt="logo" style="display:block; max-height:40px; margin:5px;">
-                    <strong class="pull-right">
-                        <c:choose>
-                            <c:when test="${not empty space.getAttribute('Company Logo')}">
-                                ${space.getAttributeValue('Company Logo')}
-                                <div class="small">${kapp.name}</div>
-                            </c:when>
-                            <c:otherwise>
-                                ${kapp.name}
-                            </c:otherwise>
-                        </c:choose>
-                    </strong>
+                <c:when test="${not empty space.getAttribute('Company Name')}">
+                   ${space.getAttributeValue('Company Name')}
+                   <div class="small">${kapp.name}</div>
                 </c:when>
-                <%-- If no logo attribute exists, display the Company or KAPP Name --%>
                 <c:otherwise>
-                    <i class="fa fa-home"></i> 
-                    <c:choose>
-                        <c:when test="${not empty space.getAttribute('Company Name')}">
-                           ${space.getAttributeValue('Company Name')}
-                           <div class="small">${kapp.name}</div>
-                        </c:when>
-                        <c:otherwise>
-                            ${kapp.name}
-                        </c:otherwise>
-                    </c:choose>
+                    ${kapp.name}
                 </c:otherwise>
             </c:choose>
         </span>
@@ -168,7 +148,7 @@
                                     <i class="fa fa-user fa-5x fa-inverse img-circle" alt="User Image"></i>
                                     <p>
                                         ${text.escape(text.trim(identity.displayName, identity.username))} 
-                                        <small>Member since <span data-moment-short>${identity.user.createdAt}</span></small>
+                                        <small>Member since <span data-moment-short>${time.format(identity.user.createdAt)}</span></small>
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->

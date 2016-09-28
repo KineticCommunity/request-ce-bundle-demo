@@ -15,7 +15,7 @@
             <section class="content-header">
                 <h1>
                     ${submission.label}
-                    <small>Submitted On: <span data-moment> ${submission.submittedAt}</span></small>
+                    <small>Submitted On: <span data-moment> ${time.format(submission.submittedAt)}</span></small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a class="${bundle.kappLocation}">
@@ -47,10 +47,10 @@
                                     </c:choose>
                                 </c:if>
                                 <dt>Date Submitted:</dt>
-                                <dd data-moment>${submission.submittedAt}</dd>
+                                <dd data-moment>${time.format(submission.submittedAt)}</dd>
                                 <c:if test="${submission.type.name != 'Approval' && submission.closedAt != null}">
                                     <dt>Date Closed:</dt>
-                                    <dd data-moment>${submission.closedAt}</dd>
+                                    <dd data-moment>${time.format(submission.closedAt)}</dd>
                                 </c:if>
                                 <dt>Status:</dt>
                                 <dd>${submission.coreState}</dd>

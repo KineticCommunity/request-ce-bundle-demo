@@ -4,7 +4,7 @@
 <bundle:layout page="${bundle.path}/layouts/layout.jsp">
     <c:set scope="request" var="category" value="${CategoryHelper.getCategory(param.category,kapp)}" />
     <bundle:variable name="head">
-        <title>${kapp.getAttributeValue('Company Name')} - ${text.escape(category.name)}</title>
+        <title>${BundleHelper.getTitle()} - ${text.escape(category.name)}</title>
     </bundle:variable>
     <bundle:scriptpack>
         <bundle:script src="${bundle.location}/js/formCard.js" />

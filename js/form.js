@@ -10,12 +10,12 @@ bundle.config.fields = {
         });
         $(field.element()).on('change', triggerFn);
     },
-    // datetime: function(field, triggerFn) {
-    //     $(field.wrapper()).addClass('form-group');
-    //     $(field.wrapper()).find('label').addClass('control-label');
-    //     $(field.element()).addClass('form-control');
-    //     $(field.element()).on('change', triggerFn);
-    // },
+     datetime: function(field, triggerFn) {
+         $(field.wrapper()).addClass('form-group');
+         $(field.wrapper()).find('label').addClass('control-label');
+         $(field.element()).addClass('form-control');
+         $(field.element()).on('change', triggerFn);
+     },
     dropdown: function(field, triggerFn) {
         $(field.wrapper()).addClass('form-group');
         $(field.wrapper()).find('label').addClass('control-label').removeClass(function (index, css) {

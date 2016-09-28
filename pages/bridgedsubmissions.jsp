@@ -5,7 +5,7 @@
 <c:set var="adminKapp" value="${space.getKapp(Text.defaultIfBlank(space.getAttributeValue('Admin Kapp Slug'),'admin'))}"/>
 <c:choose>
      <c:when test="${paramtype eq 'assets'}">
-        <c:if test="${BundleHelper.checkKappAndForm('admin','user-assets')}">
+        <c:if test="${BundleHelper.hasForm('admin','user-assets')}">
             <c:set var="params" value="${BridgedResourceHelper.map()}"/>
             <c:set target="${params}" property="User" value="${identity.username}"/>
             <c:set scope="request" var="submissionsList" value="${BridgedResourceHelper.search('User Assets',params)}"/>

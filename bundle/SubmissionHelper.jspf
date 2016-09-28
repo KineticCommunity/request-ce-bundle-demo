@@ -1,3 +1,4 @@
+<%@page import="com.kineticdata.core.web.bundles.PaginatedList"%>
 <%@page import="com.kineticdata.bundles.Text" %>
 <%!
 
@@ -55,6 +56,48 @@
             return submissionComponent.searchByKapp(kapp, searchOptions);
         }
 
+        public List<Submission> retrieveSubmissionsByRequest() {
+            com.kineticdata.core.authentication.Identity identity =
+                (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
+
+            Long date;
+            if(request.getParameter("date") != null){
+                date = Long.parseLong(request.getParameter("date"));
+            } else {
+                date = Long.parseLong("30");
+            }
+            java.time.Instant end = Time.now();
+            java.time.Instant start = Time
+                .subtract(end, date, "days", java.time.ZoneId.systemDefault());
+
+            java.util.Map<String,String[]> searchOptions = new java.util.HashMap<>();
+
+            searchOptions.put("end", new String[] {Time.format(end)} );
+            searchOptions.put("start", new String[] {Time.format(start)} );
+            
+            // User select the number of record to see in the table display.  By default they see 10.
+            if (request.getParameter("limit") != null) {
+                searchOptions.put("limit", new String[] {String.valueOf(request.getParameter("limit"))});
+            }else{
+                searchOptions.put("limit",new String[]{"1000"});
+            }
+
+            searchOptions.put("type", new String[] {request.getParameter("type")});
+            
+            if("Approval".equals(request.getParameter("type")) || "Work Order".equals(request.getParameter("type"))) {
+                searchOptions.put("values[Assigned Individual]", new String[] {identity.getUsername()});
+            } else {
+                searchOptions.put("createdBy", new String[] {identity.getUsername()});
+            }
+
+
+            if(request.getParameter("coreState") != null){
+                searchOptions.put("coreState", request.getParameterValues("coreState"));
+            }
+
+            return submissionComponent.searchByKapp(kapp, searchOptions);
+        }
+
         public List<Submission> retrieveRecentSubmissionsByKapp(String searchKapp, String coreState, Integer number){
                         com.kineticdata.core.authentication.Identity identity =
                 (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
@@ -74,12 +117,15 @@
                 searchOptions.put("limit", new String[] {String.valueOf(number)});
             }
             searchOptions.put("values[Assigned Individual]", new String[] {identity.getUsername()});
-
             Kapp searchKappObj = space.getKapp(searchKapp);
             return submissionComponent.searchByKapp(searchKappObj, searchOptions);
         };
 
-        public List<Submission> approvalAlertsSubmissions() {
+        /* This method returns a list of submissions for forms with type Approval that are in a core state of Draft. 
+         * The logged in user's username needs to match the value in the Assingen Individual field on the form.
+         * This is used to build a list for Approvers to know what needs to be completed.
+         */
+        public List<Submission> retrieveDraftApprovals() {
             com.kineticdata.core.authentication.Identity identity =
                 (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
 
@@ -92,14 +138,21 @@
             return submissionComponent.searchByKapp(kapp, searchOptions);
         }
 
-        public List<Submission> serviceReviewSubmissions(String formSlug) {
+        /* This method returns a list of submissions the form with a slug of service-reviews. 
+         * The Form Slug must be provided to get the submissions for that form using the Form Slug field on the service-reviews form.
+         * This is used on the categoy pages and the search page to show users reviews of a specifice form.
+         */
+        public List<Submission> retrieveServiceReviews(String formSlug) {
             java.util.Map<String,String[]> searchOptions = new java.util.HashMap<>();
             searchOptions.put("limit", new String[] {"1000"});
             searchOptions.put("values[Form Slug]", new String[] {formSlug});
 
-            return submissionComponent.searchByForm(kapp.getForm( new String("service-reviews") ), searchOptions);
+            return submissionComponent.searchByForm(kapp.getForm("service-reviews"), searchOptions);
         }
 
+        /* Returns a list of the first 5 submissions that have a core state of Draft or Submitted that belong to the provided category. 
+         * This is used on the category page to build up the submissions that are displayed in the panel on the right hand side.
+         */
         public List<Submission> categorySubmissions(String category) {
             com.kineticdata.core.authentication.Identity identity =
                 (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
@@ -116,6 +169,52 @@
                 categorySubmissions.addAll(submissionComponent.searchByForm(form, searchOptions));
             }
             return categorySubmissions;
+        }
+
+        public PaginatedList<Submission> getPaginatedSubmissions(){
+            com.kineticdata.core.authentication.Identity identity =
+                (com.kineticdata.core.authentication.Identity) request.getAttribute("identity");
+
+            Long date;
+            if(request.getParameter("date") != null){
+                date = Long.parseLong(request.getParameter("date"));
+            } else {
+                date = Long.parseLong("120");
+            }
+            java.time.Instant end = Time.now();
+            java.time.Instant start = Time
+                .subtract(end, date, "days", java.time.ZoneId.systemDefault());
+
+            java.util.Map<String,String[]> searchOptions = new java.util.HashMap<>();
+
+            searchOptions.put("end", new String[] {Time.format(end)} );
+            searchOptions.put("start", new String[] {Time.format(start)} );
+            
+            // User select the number of record to see in the table display.  By default they see 10.
+            if (request.getParameter("limit") != null) {
+                searchOptions.put("limit", new String[] {String.valueOf(request.getParameter("limit"))});
+            }else{
+                searchOptions.put("limit",new String[]{"10"});
+            }
+
+            // If a page token exist in the request 
+            if(request.getParameter("pageToken") != null){
+                searchOptions.put("pageToken", new String[]{request.getParameter("pageToken")});
+            }
+
+            if("Approval".equals(request.getParameter("type")) || "Work Order".equals(request.getParameter("type"))){
+                searchOptions.put("values[Assigned Individual]", new String[] {identity.getUsername()});
+            } else {
+                searchOptions.put("createdBy", new String[] {identity.getUsername()});
+            }
+
+            if(request.getParameter("coreState") != null){
+                searchOptions.put("coreState", request.getParameterValues("coreState"));
+            }
+
+            PaginatedList<Submission> page;
+            page = this.submissionComponent.searchByKapp(kapp, searchOptions);
+            return page;
         }
     }
 %>

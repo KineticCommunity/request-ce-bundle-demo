@@ -14,18 +14,12 @@
         <link rel="shortcut icon" href="${bundle.location}/images/favicon.ico" type="image/x-icon"/>
         <app:headContent/>
         <link href="${bundle.location}/libraries/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="${bundle.location}/libraries/jquery-datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
         <bundle:stylepack>
-            <bundle:style src="${bundle.location}/libraries/bootstrap/css/bootstrap.min.css"/>
+            <bundle:style src="${bundle.location}/libraries/bootstrap/css/bootstrap.min.css"/>   
+            <bundle:style src="${bundle.location}/libraries/jquery-datatables/media/css/jquery.dataTables.css" />
+            <bundle:style src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/css/responsive.dataTables.css" />
             <bundle:style src="${bundle.location}/libraries/notifie/jquery.notifie.css"/>
-            <c:choose>
-                <c:when test="${not empty themeBundlePathModifier}">
-                    <bundle:style src="${bundle.location}${themeBundlePathModifier}/css/master.css"/>
-                </c:when>
-                <c:otherwise>
-                    <bundle:style src="${bundle.location}/libraries/AdminLTE-Sass/build/master.css"/>
-                </c:otherwise>
-            </c:choose>
+            <bundle:style src="${bundle.location}/libraries/AdminLTE-Sass/build/master.css"/>
             <bundle:style src="${bundle.location}/css/custom.css"/>
             <bundle:style src="${bundle.location}/libraries/kd-typeahead/kd-typeahead.css"/>
         </bundle:stylepack>
@@ -34,20 +28,20 @@
             <bundle:script src="${bundle.location}/libraries/underscore/underscore.js"/>
             <bundle:script src="${bundle.location}/libraries/moment/moment.js" />
             <bundle:script src="${bundle.location}/libraries/moment/moment-timezone.js" />
+            <bundle:script src="${bundle.location}/libraries/jquery-datatables/media/js/jquery.dataTables.js" />
+            <bundle:script src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/js/dataTables.responsive.js" />
             <bundle:script src="${bundle.location}/libraries/kd-search/search.js"/>
             <bundle:script src="${bundle.location}/libraries/kd-typeahead/kd-typeahead.js"/>
             <bundle:script src="${bundle.location}/libraries/kd-subforms/kd-subforms.js"/>
             <bundle:script src="${bundle.location}/libraries/bootstrap/js/bootstrap.min.js"/>
             <bundle:script src="${bundle.location}/libraries/notifie/jquery.notifie.js"/>
-            <bundle:script src="${bundle.location}/libraries/jquery-datatables/jquery.dataTables.js"/>
-            <bundle:script src="${bundle.location}/libraries/jquery-datatables/dataTables.bootstrap.js"/>
             <bundle:script src="${bundle.location}/libraries/typeahead/typeahead.min.js"/>
             <bundle:script src="${bundle.location}/js/catalog.js"/>
-            <bundle:script src="${bundle.location}/js/locking.js" />
-            <bundle:script src="${bundle.location}/js/review.js"/>
             <bundle:script src="${bundle.location}/libraries/AdminLTE-Sass/build/js/app.min.js"/>
-
         </bundle:scriptpack>
+        <script>
+            window.identity = '${identity.username}';
+        </script>
         <bundle:yield name="head"/>
         <style>
             <c:if test="${not empty kapp.getAttributeValue('Logo Height Px')}">
@@ -58,14 +52,15 @@
     </head>
     <c:choose>
         <c:when test="${identity.anonymous}">
-            <body class="hold-transition login-page">
+            <body class="hold-transition login-page" style="${BundleHelper.getLoginBackground(kapp)}">
                 <div class="login-box">
                     <bundle:yield/>
                 </div>
             </body>
         </c:when>
         <c:otherwise>
-            <body class="hold-transition skin-purple-light sidebar-mini">
+            <c:set var="skin" value="skin-purple-light"/>
+            <body class="hold-transition ${BundleHelper.getThemeSkin(kapp)} sidebar-mini">
                 <div class="wrapper">
                     <c:import url="${bundle.path}${themeBundlePathModifier}/partials/header.jsp" charEncoding="UTF-8"/>
                     <c:import url="${bundle.path}/partials/sidebar.jsp" charEncoding="UTF-8"/>

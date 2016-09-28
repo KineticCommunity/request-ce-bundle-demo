@@ -1,10 +1,11 @@
 
 
-// Function called when a table needs to be built. Pass the following parameters
-    // sectionWithQuestions - Name of the section that contains the questions we want to show in the table. Note: All questions in this section will show
-    // jsonQuestionName - this is the Name of the question on the SI that stores the JSON data for the table
-    // tableDivID - create a text element on the page that you'll be displaying a table and give it an ID. Pass that ID here...
-    // tableName - pass a unique name for this table so you can handle oneoffs downstream 
+/* Function called when a table needs to be built. Pass the following parameters
+ * sectionWithQuestions - Name of the section that contains the questions we want to show in the table. Note: All questions in this section will show
+ * jsonQuestionName - this is the Name of the question on the SI that stores the JSON data for the table
+ * tableDivID - create a text element on the page that you'll be displaying a table and give it an ID. Pass that ID here...
+ * tableName - pass a unique name for this table so you can handle oneoffs downstream 
+ */
 function loadData(sectionWithQuestions, jsonQuestionName, tableDivID, tableName) {
 
     // Define Variables

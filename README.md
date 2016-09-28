@@ -13,6 +13,9 @@ Wherever possible we use defaults to make sure the pages will render correctly r
 
 The one exception to this is "My Requests" and "My Approvals".  In order to grab only the appropriate submissions we are looking for form types of _"Service"_ for My Requests and _"Approval"_ for My Approvals.  While the form won't break if you don't include this, it also won't show your requests or your approvals.
 
+## Styling
+This bundle is a customized version of the AdminLTE theme.  AdminLTE is an open source responsive HTML WebApp Template based on the Bootstrap 3 framework.  The CSS files are located in the libraries/AdminLTE-Sass directory. AdminLTE utilizes a powerful css extension language called Sass.  For more information on Sass please visit [sass-lang.com](http://sass-lang.com)
+
 ## Personalization
 This bundle easily allows for minor personalization by including optional attributes in your KAPP, Form and/or Categories.
 
@@ -23,17 +26,19 @@ This base bundle has _Required Attributes_ that utilizes Kinetic Task. To edit o
 * _Logo Url_ : By including this attribute we will use this logo instead of the home icon on the top-left of the page
 * _Logo Height Px_ : By including this attribute we will set the height of the logo in the header. Default is 40px with 5px of padding.
 * _Sidebar Html_ : We show the Kinetic Data Twitter feed by default, but you can add any HTML/widget by including the HTML/JS in this attribute.
+* _Company Name_ : The name in the upper left hand corner of the header can be change by adding a space attribute and the value you want displayed.
+* _Icon_ : We include the font-awesome icons library by default.  You can specify a class for your kapp by including this attribute and a value. (Example fa-bank)
 
 ##### Optional KAPP Attributes
 * _Task Server Url_ : URL of your Kinetic Task engine.
 * _Task Source Name_ : Source name from Kinetic Task engine.
 
 #### Form Attributes
-* _Form Icon Class_ : We include font-awesome icons by default and just apply a random icon to your forms on the catalog page.  However, you can specify a class for your form by including this attribute and a value. (Example fa-bank)
+* _Icon_ : We include the font-awesome icons library by default.  You can specify a class for your form by including this attribute and a value. (Example fa-bank)
 
 #### Category Attributes
 * _Hidden_ : Including this attribute on a category means the category and forms in that category will not be shown on the portal page.
-
+* _Icon_ : We include the font-awesome icons library by default.  You can specify a class for your category by including this attribute and a value. (Example fa-bank)
 
 ## Customization
 When you customize this bundle it is a good idea to fork it on your own git server to track your customizations and merge in any code changes we make to the default.
@@ -60,3 +65,10 @@ This default bundle uses our standard directory structure.  Bundles are complete
   /*resetPassword.jsp*: The default reset password page. This will trigger the system to send an email to the user to reset their password. Note that the SMTP server needs to be configured to work.
   /*space.jsp*: A page that displays a list of KAPPs (often request catalogs) that you have access to within your space.
 </pre></code>
+
+## Additional Information
+
+###Admin Kapp 
+The Admin Kapp is an additional kapp that can be used to manage this kapp or multiple kapps.  Some things that can be done in the Admin Kapp are: Datastore-a location to store submission that hold values useful in the bundle.  Category Helper-Create and manage categoies and subcategoies.  Group Helper-Manage group creation and group members.
+
+###Theme Bundle Path

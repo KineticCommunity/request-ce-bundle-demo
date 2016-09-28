@@ -3,8 +3,8 @@
 <bundle:layout page="${bundle.path}/layouts/layout.jsp">
     <bundle:scriptpack>
         <bundle:script src="${bundle.location}/js/formCard.js" />
-        <bundle:script src="${bundle.location}/libraries/starrr/starrr.js" />
         <bundle:script src="${bundle.location}/js/search.js" />
+        <bundle:script src="${bundle.location}/libraries/starrr/starrr.js" />
     </bundle:scriptpack>
 
     <bundle:variable name="head">

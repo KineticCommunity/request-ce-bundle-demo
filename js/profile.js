@@ -1,11 +1,10 @@
 (function($){
     $(function(){
-        /*We hide the change password and confirm change password feild for user clerity.
+        /* We hide the change password and confirm change password feilds for user clerity.
          * To not get a flicker when the page is loaded the hidden class must be on the element prior to page load.
          * First we remove the hidden class and then hide the elements (clean check it out.)
-         * The events are bound to a tag elements*/
-        $('#password-section').removeClass('hidden').hide();
-        $('#cancel').removeClass('hidden').hide();
+         * Then events are bound to a tag elements*/
+        $('.hidden').hide().removeClass('hidden');
         $('#password-toggle').on('click', function(event){
             $('#password-section').toggle(200);
             //Password-toggle is an a tag that says "Change Password" we hide this when it is clicked to reduce clutter on the screen.
@@ -25,6 +24,9 @@
             $('input#passwordConfirmation').val('');
             event.preventDefault();
         });
+        /* We are grabing the values then doing some basic vaidation before turning them into a JSON object
+         * for use in a ajax POST to update the users profile.
+         */
         $('button.save-profile').on('click', function(e){
             if ($('input#password').val() !== $('input#passwordConfirmation').val()){
                 $('input#password').notifie({
@@ -39,6 +41,9 @@
                 displayName: $('input#displayName').val().trim(),
                 email: $('input#email').val().trim()
             };
+            if ($('select#preferredLocale').val() != ""){
+                data.preferredLocale = $('select#preferredLocale').val();
+            }
             if ($('input#password').val().length > 0){
                 data.password = $('input#password').val();
             }
