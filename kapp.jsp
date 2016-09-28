@@ -11,6 +11,8 @@
         <bundle:layout page="${bundle.path}/layouts/layout.jsp">
             <bundle:variable name="head">
                 <title>Kinetic Data ${text.escape(kapp.name)}</title>
+                <script src="${i18n.scriptPath('shared')}"></script>
+                <script src="${i18n.scriptPath('bundle')}"></script>
             </bundle:variable>
             <!-- Set variable used to count and display submissions -->
             <c:set scope="request" var="submissionsList" value="${SubmissionHelper.retrieveRecentSubmissions('Service', 'Submitted', 999)}"/>
@@ -32,7 +34,7 @@
 
                 <%-- Check to See if Company Logo / Name Attributes Exists --%>
                 <c:if test="${not empty space.getAttribute('Company Logo') || not empty kapp.getAttribute('Company Logo')}">
-                    <img class="pull-left" src="${BundleHelper.getLogo(kapp)}" alt="logo" style="display:block; max-height:40px; margin:5px;">
+                    <img class="pull-left" src="${BundleHelper.getLogo()}" alt="logo" style="display:block; max-height:40px; margin:5px;">
                 </c:if>
                 <h1 class="kapp-header">
                     Enterprise Request Management System

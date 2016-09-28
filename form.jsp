@@ -57,6 +57,9 @@
             <div class="errors"></div>
             <div class="box box-primary">
                 <app:bodyContent/>
+                <script src="${i18n.scriptPath('shared')}"></script>
+                <script src="${i18n.scriptPath('bundle')}"></script>
+                <script src="${i18n.scriptPath(form)}"></script>
             </div>
         </section>
     </section>

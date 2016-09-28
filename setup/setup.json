@@ -35,6 +35,12 @@
             "allowsMultiple": false,
             "required": false,
             "description": "This value must match the value under Sources in Task (in the Task managment console look under the Admin tab to find sources). Example: CE Sources."
+        },
+        {
+            "name": "Theme Skin",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "This value sets the background color of the header. Options are (skin-blue-light, skin-black-light, skin-purple-light, skin-red-light, skin-yellow-light, sking-green-light)"
         }
     ],
     "kappAttributeDefinitions": [

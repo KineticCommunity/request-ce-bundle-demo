@@ -14,122 +14,6 @@
             this.kapp = kapp;
             this.space = space;
         }
-        
-        /******************************************************************************************
-         *** HEADER NAVIGATION
-         ******************************************************************************************/
-        
-        /**
-         * Returns a list of links to display in the header, which are defined as JSON in the 
-         * Kapps's "Header Navigation List" attribute. If Kapp is null, checks looks at the Space's
-         * "Header Navigation List" attribute. 
-         * 
-         * Sample "Header Navigation List" value:
-         * [
-         *   {
-         *       "Name": "Link Name",
-         *       "Path": "http://www.example.com"
-         *   },
-         *   {
-         *       "Name": "Link Name",
-         *       "Kapp": "Optional Kapp Slug" // Defaults to Current Kapp
-         *   },
-         *   {
-         *       "Name": "Link Name",
-         *       "Kapp": "Optional Kapp Slug" // Defaults to Current Kapp
-         *       "Page": "Optional Page File Name"
-         *   }
-         * ]
-         * 
-         * Example useage:
-         *  <c:catch var="headerNavigationError">
-         *      <c:forEach items="${BundleHelper.headerNavigation}" var="link">
-         *          <li>
-         *              <a href="${link.path}">${link.name}</a>
-         *          </li>
-         *      </c:forEach>
-         *  </c:catch>
-         *  <c:if test="${headerNavigationError ne null}">
-         *      <li class="alert alert-danger">${'Error'}</li>
-         *  </c:if>
-         * 
-         * @return List<HeaderNavigationLink> List of link objects!
-         */
-
-        public List<HeaderNavigationLink> getHeaderNavigation(){
-            // Create container to hold links
-            List<HeaderNavigationLink> headerNavigationLinks = new ArrayList<>();
-            // Get value of "Header Navigation List" attribute from kapp if exists, else from space
-            String headerNavigationAttribute = null;
-            if (this.kapp != null){
-                headerNavigationAttribute = this.kapp.getAttributeValue("Header Navigation List");
-            }
-            else {
-                headerNavigationAttribute = this.space.getAttributeValue("Header Navigation List");
-            }
-            // If "Header Navigation List" attribute exists, create links
-            if (headerNavigationAttribute != null){
-                // Get value of "Header Navigation List" attribute and parse into JSON
-                List<LinkedHashMap> headerNavigation = (ArrayList<LinkedHashMap>)Json.parse(headerNavigationAttribute);
-                // Iterate through each link in the JSON array of links
-                for (LinkedHashMap link : headerNavigation){
-                    // If link has a Name, build the link
-                    if (link.get("Name") != null){
-                        if (link.get("Path") != null){
-                            // Add link to path to result list
-                            headerNavigationLinks.add(
-                                    new HeaderNavigationLink(
-                                            (String)link.get("Name"), 
-                                            (String)link.get("Path")));
-                        }
-                        else {
-                            // Start path with the space location
-                            String path = this.bundle.getSpaceLocation() + "/";
-                            // If Kapp is specified, add specified kapp to path
-                            if (link.get("Kapp") != null){
-                                path += link.get("Kapp");
-                            }
-                            // Else if in a kapp context, use current kapp
-                            else if (this.kapp != null){
-                                path += this.kapp.getSlug();
-                            }
-                            // If Page is specified, add specified page to the path
-                            if (link.get("Page") != null){
-                                path += "?page=" + link.get("Page");
-                            }
-                            // Add link to result list
-                            headerNavigationLinks.add(
-                                    new HeaderNavigationLink(
-                                            (String)link.get("Name"), 
-                                            path));
-                        }
-                    }
-                }
-            }
-            // Return links
-            return headerNavigationLinks;
-        }
-        
-        /**
-         * Helper class which defines an instance of a header link.
-         */
-        public class HeaderNavigationLink {
-            private String name;
-            private String path;
-            
-            public HeaderNavigationLink(String name, String path){
-                this.name = name;
-                this.path = path;
-            }
-            
-            public String getName(){
-                return this.name;
-            }
-            
-            public String getPath(){
-                return this.path;
-            }
-        }
 
         /**
          * Helper for setting active page
@@ -159,10 +43,13 @@
          * If the image is an external link we take the value from the Company Logo attribue.
          * If the image is stored locally we add the bundle path so that it does not need to be added in the attribute.
          */
-        public String getLogo(Kapp kapp){
-            String logoPath = kapp.getAttributeValue("Company Logo");
+        public String getLogo(){
+            String logoPath = null;
+            if (kapp != null){
+                logoPath = kapp.getAttributeValue("Company Logo");
+            }
             if (logoPath == null) {
-                logoPath = kapp.getSpace().getAttributeValue("Company Logo");
+                logoPath = space.getAttributeValue("Company Logo");
             }
             if(logoPath.toLowerCase().contains("http")){
                 return logoPath;
@@ -189,15 +76,17 @@
         /**
          * Helper for login page background Image
          */
-        public String getLoginBackground(Kapp kapp){
-            if (kapp.getAttribute("Login Background Image") == null && kapp.getSpace().getAttribute("Login Background Image") == null) {
-                return null;
+        public String getLoginBackground(){
+            String loginBackground = null;
+            if (kapp != null) {
+                loginBackground = kapp.getAttributeValue("Login Background Image");
             }
-            else {
-                String loginBackground = kapp.getAttributeValue("Login Background Image");
-                if (loginBackground == null) {
-                    loginBackground = kapp.getSpace().getAttributeValue("Login Background Image");
-                }
+            if (loginBackground == null) {
+                loginBackground = space.getAttributeValue("Login Background Image");
+            }
+            if (loginBackground == null) {
+                return null;
+            } else {
                 if(loginBackground.toLowerCase().contains("http")){
                     return "background-image:url(" + loginBackground + "); background-size:100%;";
                 }
@@ -208,12 +97,18 @@
         }
         
         public String getTitle(){
-            String title = kapp.getAttributeValue("Company Name");
-            if (title == null) {
-                title = kapp.getSpace().getAttributeValue("Company Name");
+            String title = null;
+            if (kapp != null) {
+                title = kapp.getAttributeValue("Company Name");
             }
             if (title == null) {
+                title = space.getAttributeValue("Company Name");
+            }
+            if (kapp != null && title == null) {
                 title = kapp.getName();
+            }
+            if (title == null) {
+                title = space.getName();
             }
             return title;
         }

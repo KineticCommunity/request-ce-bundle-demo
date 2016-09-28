@@ -52,7 +52,7 @@
     </head>
     <c:choose>
         <c:when test="${identity.anonymous}">
-            <body class="hold-transition login-page" style="${BundleHelper.getLoginBackground(kapp)}">
+            <body class="hold-transition login-page" style="${BundleHelper.getLoginBackground()}">
                 <div class="login-box">
                     <bundle:yield/>
                 </div>
