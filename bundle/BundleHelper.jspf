@@ -206,7 +206,17 @@
                 }
             }
         }
-
+        
+        public String getTitle(){
+            String title = kapp.getAttributeValue("Company Name");
+            if (title == null) {
+                title = kapp.getSpace().getAttributeValue("Company Name");
+            }
+            if (title == null) {
+                title = kapp.getName();
+            }
+            return title;
+        }
         /**
          * Helper for Kapp with Form checks
          */
