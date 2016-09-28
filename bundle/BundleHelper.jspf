@@ -110,11 +110,50 @@
          * If the image is stored locally we add the bundle path so that it does not need to be added in the attribute.
          */
         public String getLogo(Kapp kapp){
-            if(kapp.getAttributeValue("Company Logo").toLowerCase().contains("http")){
-                return kapp.getAttributeValue("Company Logo");
+            String logoPath = kapp.getAttributeValue("Company Logo");
+            if (logoPath == null) {
+                logoPath = kapp.getSpace().getAttributeValue("Company Logo");
+            }
+            if(logoPath.toLowerCase().contains("http")){
+                return logoPath;
             }
             else {
-                return bundle.getPath() + "/" + kapp.getAttributeValue("Company Logo");
+                return bundle.getPath() + "/" + logoPath;
+            }
+        }
+
+        /**
+         * Helper for theme skin
+         */
+        public String getThemeSkin(Kapp kapp){
+            String themeSkin = kapp.getAttributeValue("Theme Skin");
+            if (themeSkin == null) {
+                themeSkin = kapp.getSpace().getAttributeValue("Theme Skin");
+            }
+            if (themeSkin == null) {
+                themeSkin = "skin-purple-light";
+            }
+            return themeSkin;
+        }
+
+        /**
+         * Helper for login page background Image
+         */
+        public String getLoginBackground(Kapp kapp){
+            if (kapp.getAttribute("Login Background Image") == null && kapp.getSpace().getAttribute("Login Background Image") == null) {
+                return null;
+            }
+            else {
+                String loginBackground = kapp.getAttributeValue("Login Background Image");
+                if (loginBackground == null) {
+                    loginBackground = kapp.getSpace().getAttributeValue("Login Background Image");
+                }
+                if(loginBackground.toLowerCase().contains("http")){
+                    return "background-image:url(" + loginBackground + "); background-size:100%;";
+                }
+                else {
+                    return "background-image:url(" + bundle.getPath() + "/" + loginBackground + "); background-size:100%;";
+                }
             }
         }
 
