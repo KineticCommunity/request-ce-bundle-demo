@@ -14,7 +14,7 @@
                     <c:choose>
                         <%-- Check to See if Company Logo / Name Attributes Exists --%>
                         <c:when test="${not empty space.getAttribute('Company Logo')}">
-                            <img class="" src="${BundleHelper.getLogo()}" alt="logo" style="display:block; max-height:100px; margin-left: auto; margin-right:auto; margin-top: 5px;">
+                            <img class="" src="${BundleHelper.getLogo()}" alt="logo" style="display:block; max-height:100px; margin-left: auto; margin-right:auto; margin-top: 5px; max-width:300px">
                         </c:when>
                         <%-- If no logo attribute exists, display the Company or KAPP Name --%>
                         <c:otherwise>
