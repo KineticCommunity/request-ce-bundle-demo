@@ -52,14 +52,15 @@
     </head>
     <c:choose>
         <c:when test="${identity.anonymous}">
-            <body class="hold-transition login-page">
+            <body class="hold-transition login-page" style="${BundleHelper.getLoginBackground(kapp)}">
                 <div class="login-box">
                     <bundle:yield/>
                 </div>
             </body>
         </c:when>
         <c:otherwise>
-            <body class="hold-transition skin-purple-light sidebar-mini">
+            <c:set var="skin" value="skin-purple-light"/>
+            <body class="hold-transition ${BundleHelper.getThemeSkin(kapp)} sidebar-mini">
                 <div class="wrapper">
                     <c:import url="${bundle.path}${themeBundlePathModifier}/partials/header.jsp" charEncoding="UTF-8"/>
                     <c:import url="${bundle.path}/partials/sidebar.jsp" charEncoding="UTF-8"/>

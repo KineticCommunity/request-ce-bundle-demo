@@ -29,7 +29,12 @@
             <c:set scope="request" var="tileClass" value="col-md-${tileCount}"/>
             <%-- Header --%>
             <section class="content-header">
-                <h1>
+
+                <%-- Check to See if Company Logo / Name Attributes Exists --%>
+                <c:if test="${not empty space.getAttribute('Company Logo') || not empty kapp.getAttribute('Company Logo')}">
+                    <img class="pull-left" src="${BundleHelper.getLogo(kapp)}" alt="logo" style="display:block; max-height:40px; margin:5px;">
+                </c:if>
+                <h1 class="kapp-header">
                     Enterprise Request Management System
                 </h1>
                 <ol class="breadcrumb">

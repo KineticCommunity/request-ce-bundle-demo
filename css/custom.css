@@ -8,6 +8,9 @@
 .main-header .logo-lg, .main-header .logo-mini{
     
 }
+h1.kapp-header {
+  margin-top:12px;
+}
 /* Sidebar Toggle */
 div.wrapper .main-sidebar {
   height: 100%;
