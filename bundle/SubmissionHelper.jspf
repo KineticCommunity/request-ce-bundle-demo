@@ -81,8 +81,9 @@
              * The fifth option is used as a default range set 365 days from now.
              */
             if (parameters.getValue("start") != null && parameters.getValue("end") != null){
+                end = Time.add(Time.parse(parameters.getValue("end")),18,"hours",java.time.ZoneId.systemDefault());
                 searchOptions.put("start", new String[]{Time.format(parameters.getValue("start"))});
-                searchOptions.put("end", new String[]{Time.format(parameters.getValue("end"))});
+                searchOptions.put("end", new String[]{Time.format(end)});
             }else if(parameters.getValue("start") == "" && parameters.getValue("end") == null){
                 searchOptions.put("end", new String[] {Time.format(end)} );
             }else if(parameters.getValue("start") != null && parameters.getValue("end") == null){
@@ -91,7 +92,8 @@
             }else if(parameters.getValue("start") == null && parameters.getValue("end") != null){
                 end = Time.parse(parameters.getValue("end"));
                 start = Time.subtract(end, 365, "days", java.time.ZoneId.systemDefault());
-                searchOptions.put("end", new String[] {Time.format(parameters.getValue("end"))} );
+                end = Time.add(Time.parse(parameters.getValue("end")),18,"hours",java.time.ZoneId.systemDefault());
+                searchOptions.put("end", new String[] {Time.format(end)} );
                 searchOptions.put("start", new String[]{Time.format(start)});
             }else{
                 searchOptions.put("end", new String[] {Time.format(end)} );
