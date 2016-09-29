@@ -113,6 +113,7 @@
                 type: 'Approval',
                 coreState: ['Submitted','Draft'],
                 serverSide: false,
+                addDateRangeEvents: true
             });
             renderTable({
                 table: '#closedTable',
@@ -120,6 +121,7 @@
                 type: 'Approval',
                 coreState: ['Closed'],
                 serverSide: true,
+                addDateRangeEvents: true
             });
         }
         if(currentId === 'requests'){
@@ -128,21 +130,24 @@
                 jsonFileName: 'openTable.json',
                 type: 'Service',
                 coreState: ['Submitted'],
-                serverSide: false
+                serverSide: false,
+                addDateRangeEvents: true
             });
             renderTable({
                 table: '#closedTable',
                 jsonFileName: 'closedTable.json',
                 type: 'Service',
                 coreState: ['Closed'],
-                serverSide: true
+                serverSide: true,
+                addDateRangeEvents: true
             });
             renderTable({
                 table: '#draftTable',
                 jsonFileName: 'openTable.json',
                 type: 'Service',
                 coreState: ['Draft'],
-                serverSide: false
+                serverSide: false,
+                addDateRangeEvents: true
             });
         }
         if(currentId == 'workOrder'){
@@ -153,6 +158,7 @@
                 type: 'Work Order',
                 coreState: ['Submitted','Draft'],
                 serverSide: false,
+                addDateRangeEvents: true
             });
             renderTable({
                 table: '#closedTable',
@@ -160,19 +166,21 @@
                 type: 'Work Order',
                 coreState: ['Closed'],
                 serverSide: true,
+                addDateRangeEvents: true
             });
         }
     };
 
     function renderTable(options){
+        demo.options = options;
+        if(options.addDateRangeEvents){
+            dateRange(bundle.demo.options);
+        }
         $.ajax({
             method: 'get',
             url: buildAjaxUrl(options),
             dataType: "json",
             contentType: 'application/json',
-            beforeSend: function(jqXHR, obj){
-                $(options.table).append('<div><i id="spinner" class="fa fa-cog fa-spin fa-3x" style="text-align:center;width:100%"/></div>');
-            },
             success: function(data, textStatus, jqXHR){
                 $('#spinner').remove();
                 // extend the object to format the dataTable.
@@ -186,7 +194,7 @@
                     "destroy": true,                   
                     "bSort": options.serverSide ? false : true,
                     "pagingType": options.serverSide ? "simple" : "simple_numbers",
-                    "dom": options.serverSide ? '<"top"l><"dataTables_date">t<"bottom"p><"clear">' : 'lftip',
+                    "dom": options.serverSide ? "<'row'<'col-sm-12'l>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12'p>>" : "<'row'<'col-sm-6'l><'col-sm-6'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     "pageLength": options.serverSide ? options.length : 10,
                     "createdRow": function (row, data) {
                         $(row).find('td.data-moment').each(function(index, td) {
@@ -206,10 +214,6 @@
                 });
                 var table = $(options.table).DataTable(records);
 
-                /* After the table has been built we are adding an html element that has a dropdown list so that a user can select a number of days back
-                 * to retrieve the list from.
-                 */
-                //addDateDropdown(options)
                 if(options.serverSide){
                     serverOptions(options,data);
                 }
@@ -244,6 +248,12 @@
         if(options.token && options.token() !== undefined){
             url += '&pageToken='+options.token();
         }
+        if(options.start !== undefined){
+            url += '&start=' + options.start;
+        }
+        if(options.end !== undefined && options.end !== null){
+            url += '&end='+options.end;
+        }
         return url;
     }
     
@@ -252,7 +262,7 @@
      */
     function serverOptions(options,data){
         // For server side pagination we are collecting the nextpagetoken metadata that is attached to submissions return object.
-        // The token is added to an array that is attached to the table elements data property. 
+        // The token is added to an array that is attached to the table elements data property.
         if ($(options.table).data('nextPageTokens') === undefined) {
             $(options.table).data('nextPageTokens', []); 
         }
@@ -270,6 +280,7 @@
                 renderTable($.extend({},options,{
                     token: function(){
                         return token;},
+                    addDateRangeEvents: false
                 }));
             });
         }
@@ -293,6 +304,7 @@
                     token: function(){
                         token = _.last(arr);
                         return token;},
+                    addDateRangeEvents: false
                 }));
             });
         }
@@ -304,6 +316,7 @@
             $(options.table).removeData('nextPageTokens');
             renderTable($.extend({},options,{
                 length: $(options.table+'_length option:selected').val(),
+                addDateRangeEvents: false
             }));
         });
     };
@@ -333,16 +346,99 @@
         }
         return statusColor;
     }
-    
-  
-    $(function(){
+     
+    function dateRange(options){
+        var dateRange = '[data-date-range="'+options.table.replace('#','')+'"]';
+        var sectionDateRange = '[data-section-date-range="'+options.table.replace('#','')+'"]';
+        var datePickerStart = '[data-date-picker-start="'+options.table.replace('#','')+'"]';
+        var datePickerEnd = '[data-date-picker-end="'+options.table.replace('#','')+'"]';
+        
+        $(sectionDateRange).removeClass('hidden').hide();
+        
+        $(dateRange).off().on('change', function(){
+            var selection = $(dateRange+' :selected').val()
+            if(selection === "View All"){
+                $(sectionDateRange).hide(200);
+                $(datePickerStart+' input').val('');
+                $(datePickerEnd+' input').val('');
+                delete options.token;
+                $(options.table).removeData('nextPageTokens');
+                renderTable($.extend({},options,{
+                    start: "",
+                    end: undefined,
+                    addDateRangeEvents: false
+                }));
+            }else if(selection === "Custom"){
+                $(sectionDateRange).toggle(200);
+            }else {
+                $(sectionDateRange).hide(200);
+                $(datePickerStart+' input').val('');
+                $(datePickerEnd+' input').val('');
+                delete options.token;
+                $(options.table).removeData('nextPageTokens');
+                renderTable($.extend({},options,{
+                    start: undefined,
+                    end: undefined,
+                    addDateRangeEvents: false
+                }));
+            } 
+        });
 
-    });
-    
+       /* This builds the start and end datepicker calanders that open when the Start and End Date inputs are clicked. */
+        jQuery(datePickerStart).datetimepicker({
+            format:'Y/m/d',
+            onChangeDateTime:function(dp,$input){
+                $(datePickerStart+' input').val($(datePickerStart).val());
+                renderCustomDateTable();
+            },
+            onShow:function( ct ){
+                this.setOptions({
+                    maxDate:jQuery(datePickerEnd+' input').val()?jQuery(datePickerEnd+' input').val():moment()
+                })
+            },
+            timepicker:false
+        });
+        jQuery(datePickerEnd).datetimepicker({
+            format:'Y/m/d',
+             onChangeDateTime:function(dp,$input){
+                $(datePickerEnd+' input').val($(datePickerEnd).val());
+                renderCustomDateTable();
+            },
+            onShow:function( ct ){
+                this.setOptions({
+                    minDate:jQuery(datePickerStart+' input').val()?jQuery(datePickerStart+' input').val():false
+                })
+            },
+            timepicker:false
+        });
+        /* The on change events for the start and end date field are required if the user wants the table to update when values are deleted. */
+        $(datePickerStart+' input').on('change',function(){
+            if(!moment($(datePickerStart+' input')).isValid() && !moment($(datePickerEnd+' input')).isValid()){
+                renderCustomDateTable();
+            }else if ($('#date_timepicker_end').val() !== ""){
+                $('[date-range]').notifie({type:'alert',severity:'info',message:'Valid moment.js dates are requeired.',expire:'1000'});
+            }
+        })
+        $(datePickerEnd+' input').on('change',function(){
+            if(!moment($(datePickerStart+' input')).isValid() && !moment($(datePickerEnd+' input')).isValid()){
+                renderCustomDateTable();
+            }else if ($('#date_timepicker_end').val() !== ""){
+                $('[date-range]').notifie({type:'alert',severity:'info',message:'Valid moment.js dates are requeired.',expire:'1000'});
+            }
+        })
+        function renderCustomDateTable(){
+            delete options.token;
+            $(options.table).removeData('nextPageTokens');
+            renderTable($.extend({},options,{
+                start: $(datePickerStart+' input').val() !== "" ? new Date($(datePickerStart+' input').val()).toISOString() : undefined,
+                end: $(datePickerEnd+' input').val() !== "" ? new Date($(datePickerEnd+' input').val()).toISOString() : undefined,
+                addDateRangeEvents: false
+            }));
+        }
+    }
     $(function() {
         // Initialize, with seed values, the dataTables that are used on the approval, request and work order pages 
         initializeTable();
-        
         // Display error message if authentication error is found in URL.  This happens if login credentials fail.
         if(window.location.search.substring(1).indexOf('authentication_error') !== -1){
             $('form').notifie({type:'alert',severity:'info',message:'username or password not found'});

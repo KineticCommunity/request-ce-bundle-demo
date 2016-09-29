@@ -8,8 +8,16 @@
 .main-header .logo-lg, .main-header .logo-mini{
     
 }
+<<<<<<< HEAD
 h1.kapp-header {
   margin-top:12px;
+=======
+.header__date-range > span > div {
+    margin-left: 1em;
+    margin-top: 1em;
+    float: left;
+    width: 10em; 
+>>>>>>> feature/dateRange
 }
 /* Sidebar Toggle */
 div.wrapper .main-sidebar {

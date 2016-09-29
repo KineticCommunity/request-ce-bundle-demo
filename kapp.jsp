@@ -1,7 +1,6 @@
 <%@page pageEncoding="UTF-8" contentType="text/html" trimDirectiveWhitespaces="true"%>
 <%@include file="bundle/initialization.jspf" %>
 <%@include file="bundle/router.jspf" %>
-<c:set var="adminKapp" value="${space.getKapp(Text.defaultIfBlank(space.getAttributeValues('Admin Kapp Slug'),'admin'))}"/>
 <c:choose>
     <c:when test="${identity.anonymous}">
         <c:set var="kapp" scope="request" value="${kapp}"/>
