@@ -1,4 +1,4 @@
-<div data-range class="header__date-range">
+<div data-range="${tableId}" class="header__date-range">
     <label> Date Range:
         <select data-date-range="${tableId}">
             <option value="1 Year">1 Year</option>

@@ -262,7 +262,7 @@
      */
     function serverOptions(options,data){
         // For server side pagination we are collecting the nextpagetoken metadata that is attached to submissions return object.
-        // The token is added to an array that is attached to the table elements data property. 
+        // The token is added to an array that is attached to the table elements data property.
         if ($(options.table).data('nextPageTokens') === undefined) {
             $(options.table).data('nextPageTokens', []); 
         }
@@ -361,8 +361,11 @@
                 $(sectionDateRange).hide(200);
                 $(datePickerStart+' input').val('');
                 $(datePickerEnd+' input').val('');
+                delete options.token;
+                $(options.table).removeData('nextPageTokens');
                 renderTable($.extend({},options,{
                     start: "",
+                    end: undefined,
                     addDateRangeEvents: false
                 }));
             }else if(selection === "Custom"){
@@ -371,8 +374,11 @@
                 $(sectionDateRange).hide(200);
                 $(datePickerStart+' input').val('');
                 $(datePickerEnd+' input').val('');
+                delete options.token;
+                $(options.table).removeData('nextPageTokens');
                 renderTable($.extend({},options,{
-                    start: moment().subtract(1,"year").format(),
+                    start: undefined,
+                    end: undefined,
                     addDateRangeEvents: false
                 }));
             } 
@@ -383,13 +389,7 @@
             format:'Y/m/d',
             onChangeDateTime:function(dp,$input){
                 $(datePickerStart+' input').val($(datePickerStart).val());
-                if($(datePickerStart).val() !== ""){
-                    renderTable($.extend({},options,{
-                        start: $(datePickerStart).val() ? new Date($(datePickerStart).val()).toISOString() : null,
-                        end: $(datePickerEnd).val() ? new Date($(datePickerEnd).val()).toISOString() : null,
-                        addDateRangeEvents: false
-                    }));
-                }
+                renderCustomDateTable();
             },
             onShow:function( ct ){
                 this.setOptions({
@@ -402,15 +402,7 @@
             format:'Y/m/d',
              onChangeDateTime:function(dp,$input){
                 $(datePickerEnd+' input').val($(datePickerEnd).val());
-                if($(datePickerStart).val() !== ""){
-                    renderTable($.extend({},options,{
-                        start: $(datePickerStart).val() ? new Date($(datePickerStart).val()).toISOString() : null,
-                        end: $(datePickerEnd).val() ? new Date($(datePickerEnd).val()).toISOString() : null,
-                        addDateRangeEvents: false
-                    }));
-                }else if ($(datePickerEnd).val() !== ""){
-                    $('div.title-header').notifie({type:'alert',severity:'info',message:'A start date is Required.',expire:'1000'});
-                }
+                renderCustomDateTable();
             },
             onShow:function( ct ){
                 this.setOptions({
@@ -419,6 +411,30 @@
             },
             timepicker:false
         });
+        /* The on change events for the start and end date field are required if the user wants the table to update when values are deleted. */
+        $(datePickerStart+' input').on('change',function(){
+            if(!moment($(datePickerStart+' input')).isValid() && !moment($(datePickerEnd+' input')).isValid()){
+                renderCustomDateTable();
+            }else if ($('#date_timepicker_end').val() !== ""){
+                $('[date-range]').notifie({type:'alert',severity:'info',message:'Valid moment.js dates are requeired.',expire:'1000'});
+            }
+        })
+        $(datePickerEnd+' input').on('change',function(){
+            if(!moment($(datePickerStart+' input')).isValid() && !moment($(datePickerEnd+' input')).isValid()){
+                renderCustomDateTable();
+            }else if ($('#date_timepicker_end').val() !== ""){
+                $('[date-range]').notifie({type:'alert',severity:'info',message:'Valid moment.js dates are requeired.',expire:'1000'});
+            }
+        })
+        function renderCustomDateTable(){
+            delete options.token;
+            $(options.table).removeData('nextPageTokens');
+            renderTable($.extend({},options,{
+                start: $(datePickerStart+' input').val() !== "" ? new Date($(datePickerStart+' input').val()).toISOString() : undefined,
+                end: $(datePickerEnd+' input').val() !== "" ? new Date($(datePickerEnd+' input').val()).toISOString() : undefined,
+                addDateRangeEvents: false
+            }));
+        }
     }
     $(function() {
         // Initialize, with seed values, the dataTables that are used on the approval, request and work order pages 

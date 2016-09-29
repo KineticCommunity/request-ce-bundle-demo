@@ -1,3 +1,4 @@
+<%@page import="com.kineticdata.bundles.Time"%>
 <%@page import="org.springframework.util.StringUtils"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -73,27 +74,29 @@
             
             /* This is used with the date range picker on the submissions pages.
              * The first option is used if the custom date range is selcected with a start and end date.
-             * The second option is used if the start date is filled out in the custom range but not the end date.
-             * The third option is used as a default range set 365 days from now.
+             * The second option is used to view all submissions up to current date.
+             * The third option is used if the start date is filled out in the custom range but not the end date.
+             * The forth option is used if the end date if filled out in the custom range but not the start date.
+             * Due to performance if the end date is filled out but no start date we only look back a year.
+             * The fifth option is used as a default range set 365 days from now.
              */
-            if (parameters.getValue("start") != null && parameters.getValue("end") != null) {
-                System.out.println("start and end");
-            System.out.println(Time.format(parameters.getValue("start")));
-            System.out.println(Time.format(parameters.getValue("end")));
+            if (parameters.getValue("start") != null && parameters.getValue("end") != null){
                 searchOptions.put("start", new String[]{Time.format(parameters.getValue("start"))});
                 searchOptions.put("end", new String[]{Time.format(parameters.getValue("end"))});
-            }else if(!StringUtils.isEmpty(parameters.getValue("start"))){
-                System.out.println("only start");
+            }else if(parameters.getValue("start") == "" && parameters.getValue("end") == null){
+                searchOptions.put("end", new String[] {Time.format(end)} );
+            }else if(parameters.getValue("start") != null && parameters.getValue("end") == null){
                 searchOptions.put("end", new String[] {Time.format(end)} );
                 searchOptions.put("start", new String[]{Time.format(parameters.getValue("start"))});
+            }else if(parameters.getValue("start") == null && parameters.getValue("end") != null){
+                end = Time.parse(parameters.getValue("end"));
+                start = Time.subtract(end, 365, "days", java.time.ZoneId.systemDefault());
+                searchOptions.put("end", new String[] {Time.format(parameters.getValue("end"))} );
+                searchOptions.put("start", new String[]{Time.format(start)});
             }else{
                 searchOptions.put("end", new String[] {Time.format(end)} );
-                if(parameters.getValue("start") != ""){
-                    searchOptions.put("start", new String[] {Time.format(start)} );
-                }
+                searchOptions.put("start", new String[] {Time.format(start)} );
             }
-            System.out.println(start);
-            System.out.println(end);
             
             // User select the number of record to see in the table display.  By default they see 10.
             if (request.getParameter("limit") != null) {
