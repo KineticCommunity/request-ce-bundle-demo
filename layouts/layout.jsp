@@ -13,23 +13,26 @@
         <link rel="icon" type="image/png" href="${bundle.location}/images/favicon-96x96.png" sizes="96x96">
         <link rel="shortcut icon" href="${bundle.location}/images/favicon.ico" type="image/x-icon"/>
         <app:headContent/>
-        <link href="${bundle.location}/libraries/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        
+        <%-- Bundle stylepack and scriptpack create a minified and single file of referanced stylesheet and javascript
+        Add ?debugjs to the end of your URL to view individual files --%>
+        
         <bundle:stylepack>
             <bundle:style src="${bundle.location}/libraries/bootstrap/css/bootstrap.min.css"/>   
-            <bundle:style src="${bundle.location}/libraries/jquery-datatables/media/css/jquery.dataTables.css" />
-            <bundle:style src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/css/responsive.dataTables.css" />
+            <bundle:style src="${bundle.location}/libraries/datatables/datatables.css"/>
             <bundle:style src="${bundle.location}/libraries/notifie/jquery.notifie.css"/>
             <bundle:style src="${bundle.location}/libraries/AdminLTE-Sass/build/master.css"/>
             <bundle:style src="${bundle.location}/css/custom.css"/>
             <bundle:style src="${bundle.location}/libraries/kd-typeahead/kd-typeahead.css"/>
         </bundle:stylepack>
+        <link href="${bundle.location}/libraries/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <bundle:scriptpack>
             <bundle:script src="${bundle.location}/libraries/jquery/jquery.min.js" />
             <bundle:script src="${bundle.location}/libraries/underscore/underscore.js"/>
             <bundle:script src="${bundle.location}/libraries/moment/moment.js" />
             <bundle:script src="${bundle.location}/libraries/moment/moment-timezone.js" />
-            <bundle:script src="${bundle.location}/libraries/jquery-datatables/media/js/jquery.dataTables.js" />
-            <bundle:script src="${bundle.location}/libraries/jquery-datatables/extensions/Responsive/js/dataTables.responsive.js" />
+            <bundle:script src="${bundle.location}/libraries/datatables/datatables.js"/>
+            <bundle:script src="${bundle.location}/libraries/datetimepicker-master/build/jquery.datetimepicker.full.js"/>  
             <bundle:script src="${bundle.location}/libraries/kd-search/search.js"/>
             <bundle:script src="${bundle.location}/libraries/kd-typeahead/kd-typeahead.js"/>
             <bundle:script src="${bundle.location}/libraries/kd-subforms/kd-subforms.js"/>
@@ -52,7 +55,7 @@
     </head>
     <c:choose>
         <c:when test="${identity.anonymous}">
-            <body class="hold-transition login-page" style="${BundleHelper.getLoginBackground(kapp)}">
+            <body class="hold-transition login-page" style="${BundleHelper.getLoginBackground()}">
                 <div class="login-box">
                     <bundle:yield/>
                 </div>

@@ -5,9 +5,25 @@
             "allowsMultiple": false,
             "required": true,
             "description": "The slug of the Admin Kapp. Used by other Kapps to access the Admin Kapp."
-        }
-    ],
-    "kappAttributeDefinitions": [
+        },
+        {
+            "name": "Company Name",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "Name of your company that will be displayed on your catalog." 
+        },
+        {
+            "name": "Company Logo",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "A Url to the logo that you would like displayed on the login and home page." 
+        },
+        {
+            "name": "Login Background Image",
+            "allowsMultiple": false,
+            "required": false,
+            "description": "A Url to the background image that will be displayed on the login page." 
+        },
         {
             "name": "Task Server Url",
             "allowsMultiple": false,
@@ -21,41 +37,13 @@
             "description": "This value must match the value under Sources in Task (in the Task managment console look under the Admin tab to find sources). Example: CE Sources."
         },
         {
-            "name": "Filehub Url",
+            "name": "Theme Skin",
             "allowsMultiple": false,
             "required": false,
-            "description": "This is requred to use FileHub.  The URL to the Kinetic Filehub application.  Example: https://acme.com/kinetic-filehub."
-        },
-         {
-            "name": "Filestore Slug",
-            "allowsMultiple": false,
-            "required": false,
-            "description": "This is requred to use FileHub.  The slug of the desired filestore configured in Kinetic Filehub."
-        },
-        {
-            "name": "Filestore Key",
-            "allowsMultiple": false,
-            "required": false,
-            "description": "This is requred to use FileHub.  The key for an access key associated to the specified filestore."
-        },
-        {
-            "name": "Filestore Secret",
-            "allowsMultiple": false,
-            "required": false,
-            "description": "This is requred to use FileHub.  The secret associated to the specified key."
-        },
-        {
-            "name": "Lockable Submission Delegation Attribute",
-            "allowsMultiple": false,
-            "required": false,
-            "description": "This should be set to the name of the User attribute definition that corresponds to assignment delegation, or left blank if delegation is not being used."
-        },
-        {
-            "name": "Lockable Submission Group Attribute",
-            "allowsMultiple": false,
-            "required": false,
-            "description": "This should be set to the name of the User attribute definition that corresponds to groups, or left blank if groups are not being managed by User attributes."
-        },
+            "description": "This value sets the background color of the header. Options are (skin-blue-light, skin-black-light, skin-purple-light, skin-red-light, skin-yellow-light, sking-green-light)"
+        }
+    ],
+    "kappAttributeDefinitions": [
         {
             "name": "Shared Bridged Resource Form Slug",
             "allowsMultiple": true,

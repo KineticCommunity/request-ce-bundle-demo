@@ -52,11 +52,13 @@
                     <i class="fa fa-thumbs-o-up"></i> <span>My Approvals</span>
                 </a>
             </li>
-            <li <c:if test="${param['page'] eq 'workOrder'}">class="active"</c:if> >
-                <a href="${bundle.kappLocation}?page=workOrder">
-                    <i class="fa fa-tasks"></i> <span>My Tasks</span>
-                </a>
-            </li>
+            <c:if test="${space.getAttributeValue('QApp Slug') != null}">
+                <li <c:if test="${param['page'] eq 'workOrder'}">class="active"</c:if> >
+                    <a href="${bundle.spaceLocation}/${space.getAttributeValue('QApp Slug')}#/queue/filter/__default__">
+                        <i class="fa fa-tasks"></i> <span>My Tasks</span>
+                    </a>
+                </li>
+            </c:if>
             <c:if test="${BundleHelper.hasForm('admin','user-assets')}">
                 <li <c:if test="${param['type'] eq 'assets'}">class="active"</c:if> >
                     <a href="${bundle.kappLocation}?page=bridgedsubmissions&type=assets">
@@ -64,14 +66,14 @@
                     </a>
                 </li>
             </c:if>
-            <c:if test="${not empty kapp.getForm('help')}">
+            <c:if test="${BundleHelper.hasForm(kapp,'knowledge')}">
                 <li <c:if test="${param['page'] eq 'approval'}">class="active"</c:if> >
                     <a href="${bundle.kappLocation}?page=#">
                         <i class="fa fa-questionmark"></i> <span>Knowledge Base</span>
                     </a>
                 </li>
             </c:if>
-            <c:if test="${BundleHelper.hasForm(kapp,'knowledge')}">
+            <c:if test="${not empty kapp.getForm('help')}">
                 <li <c:if test="${param['page'] eq 'work-order'}">class="active"</c:if> >
                     <a href="${bundle.spaceLocation}/${kapp.slug}/help">
                         <i class="fa fa-life-ring"></i> <span>Help</span>
