@@ -55,7 +55,7 @@
                 return logoPath;
             }
             else {
-                return bundle.getPath() + "/" + logoPath;
+                return "/kinetic/" + bundle.getPath() + "/" + logoPath;
             }
         }
 
