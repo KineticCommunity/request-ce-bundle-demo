@@ -8,6 +8,7 @@
     <c:set var="submission" value="${Submissions.retrieve(param.id)}" scope="request"/>
     <c:set var="changeHandlerName" value="${kapp.getAttributeValue('Change Request Handler')}" scope="request"/>
     <c:set var="incidentHandlerName" value="${kapp.getAttributeValue('Incident Handler')}" scope="request"/>
+    <c:set var="workOrderHandlerName" value="${kapp.getAttributeValue('Work Order Handler')}" scope="request"/>
 </c:if>
 
 <c:forEach var="run" items="${TaskRuns.find(submission)}">
@@ -65,6 +66,9 @@
                             </c:when>
                             <c:when test="${task.defName eq incidentHandlerName}">
                                 <div class="incident" data-for="${task.resultsMap['Incident Number']}"></div>
+                            </c:when>
+                            <c:when test="${task.defName eq workOrderHandlerName}">
+                                <div class="work-order" data-for="${task.resultsMap['Work Order ID']}"></div>
                             </c:when>
                             <c:otherwise>
                                 <c:if test="${not empty task.messages}">

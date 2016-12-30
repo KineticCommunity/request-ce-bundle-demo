@@ -68,7 +68,7 @@
                             });
                             $(container).html(parentHtml);
                             // Only Allow Work Info's to be added to open Records
-                            if (parent['Status'] !== "Resolved" && parent['Status'] !== "Closed") {
+                            if (parent['Status'] !== "Completed" && parent['Status'] !== "Closed" && parent['Status'] !== "Rejected" && parent['Status'] !== "Cancelled") {
                                 // Load Work Notes Subform
                                 K.load({
                                     path: workLogUrl,
@@ -146,6 +146,74 @@
                                         form.select('field[Parent Submission Id]').value(parent.Id);
                                         form.select('field[Parent Fulfillment Id]').value(parent.Id);
                                         form.select('field[Parent Fulfillment Type]').value("Incident");
+                                    },
+                                    completed: function(submission, action) {
+                                        action.close();
+                                        $('[note-for="'+parent.Id+'"]').html('<p>Your note has been successfully added to the system...</p>');
+                                    }
+                                }); 
+                            }
+                        },
+                        dataType: "json"
+                    });
+                },
+                dataType: "json"
+            });
+        });
+        // Process BMC Work Orders
+        $('.work-order').each(function(){
+            // Container where the Bridged Data will be returned to
+            var container = $(this);
+            // Append Spinner while bridge is being searched
+            $(container).append(spinner);
+            // Id of the Object to get data for
+            var id = $(this).data('for');
+            // URL of Bridged Data
+            bridgeUrlParent = bundle.kappLocation() + "/shared-resources/bridgedResources/Work Order?values[Work Order Id]=" + id;
+            workLogUrl = bundle.kappLocation() + '/work-log-entry'
+            // Look for Parent Object
+            $.ajax({
+                url: bridgeUrlParent,
+                success: function(data){
+                    var parent = data.record.attributes;
+                    var parentHtml = $('<div class="well"><h4>Work Order Number: ' + parent.Id + '</h4><hr></div>');
+                    // Set Status of Task to Status of Parent Record
+                    $(container).parents('.timeline-item').find('.task-status').text(parent['Status']);
+                    bridgeUrlChild = bundle.kappLocation() + "/shared-resources/bridgedResources/Work Order Work Info?values[Work Order Id]=" + parent.Id;
+                    // Look for Child - Note Entries
+                    $.ajax({
+                        url: bridgeUrlChild,
+                        success: function(data){
+                            if(data.records.records.length > 0){
+                                var childrenHtml = $('<ul class="list-unstyled ui-sortable"><h4>Notes:</h4></ul>');
+                                var children = _.map(data.records.records, function(record){
+                                    return _.object(data.records.fields, record);
+                                });
+                                $.each(children, function(i,child){
+                                    var childHtml = $('<strong class="pull-left primary-font">' + child['Submitter'] + '</strong>' + 
+                                        '<small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>&nbsp;<span data-moment-short>' + child['Submit Date'] + '</span></small></br>' + 
+                                        '<li class="ui-state-default">' + child['Notes'] + '</li><hr></br>')
+                                    $(childrenHtml).append(childHtml);
+                                })
+                                $(parentHtml).append(childrenHtml);
+                            }
+                            $(parentHtml).append($('<div note-for="' + parent.Id + '"></div>'))
+                            $(parentHtml).find('[data-moment-short]').each(function(index, item) {
+                                var element = $(item);
+                                element.html(moment(element.text()).fromNow());
+                            });
+                            $(container).html(parentHtml);
+                            
+                            // Only Allow Work Info's to be added to open Records
+                            if (parent['Status'] !== "Rejected" && parent['Status'] !== "Cancelled" && parent['Status'] !== "Closed" && parent['Status'] !== "Completed") {
+                                // Load Work Notes Subform
+                                K.load({
+                                    path: workLogUrl,
+                                    container: '[note-for="'+parent.Id+'"]',
+                                    loaded: function(form) { 
+                                        form.select('field[Parent Submission Id]').value(parent.Id);
+                                        form.select('field[Parent Fulfillment Id]').value(parent.Id);
+                                        form.select('field[Parent Fulfillment Type]').value("Work Order");
                                     },
                                     completed: function(submission, action) {
                                         action.close();
