@@ -139,9 +139,29 @@
          *----------------------------------------------------------------------------------------*/
         
         private Map<String,Object> request(String name, Map<String,String> parameters) throws Exception {
+         // Determine the hostname
+            String host;
+            // If the request is not forwarded from a proxy
+            if (request.getHeader("x-forwarded-host") == null) {
+                // Use the servername
+                host = request.getServerName();
+            }
+            // If the request was forwarded from a proxy
+            else {
+                // Split the hosts header into the array of forwarding proxies
+                String[] hosts = request.getHeader("x-forwarded-host").split(",");
+                // Choose the last one (we are effectively making an internal REST
+                // call, so there is no reason to go back through the proxies) and
+                // remove the protocol, port, and path from the host to obtain the 
+                // hostname.
+                host = hosts[hosts.length-1].trim()
+                    .replaceAll("^https?://", "")
+                    .replaceAll("/.*$", "")
+                    .replaceAll(":\\d+", "");
+            }
             // Build the URL
             StringBuilder url = new StringBuilder();
-            url.append(request.getScheme()).append("://").append(request.getServerName());
+            url.append(request.getScheme()).append("://").append(host);
             if (request.getServerPort() != 80 && request.getServerPort() != 443) {
                 url.append(":").append(request.getServerPort());
             }
@@ -165,7 +185,7 @@
             for (Cookie cookie : request.getCookies()) {
                 BasicClientCookie basicClientCookie = 
                     new BasicClientCookie(cookie.getName(), cookie.getValue());
-                basicClientCookie.setDomain(request.getServerName());
+                basicClientCookie.setDomain(host);
                 cookieStore.addCookie(basicClientCookie);
             }
             HttpClient httpClient = HttpClientBuilder.create()
