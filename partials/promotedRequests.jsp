@@ -21,7 +21,7 @@
                               <img src="${bundle.location}/images/forms/${popForm.getAttributeValue('Image')}"  alt="${text.escape(popForm.name)}"/>
                            </c:when>
                            <c:when test="${not empty popForm.getAttributeValue('Icon')}">
-                             <i class="fa ${form.getAttributeValue('Icon')}"/>
+                              <i class="fa ${popForm.getAttributeValue('Icon')}"></i>
                            </c:when>
                         </c:choose>
                      </div>
