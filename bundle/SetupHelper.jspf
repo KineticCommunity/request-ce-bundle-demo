@@ -82,6 +82,10 @@
                 try { 
                     // Read and parse the setup.json configuration data
                     LinkedHashMap parsedConfiguration = (LinkedHashMap)JsonUtils.parse(new FileReader(request.getServletContext().getRealPath(bundle.getPath() + "/setup/setup.json")));
+                    if (this.form != null && this.form.getField("ConfigJSON") != null) {
+                        // Read and parse the setup.json configuration data
+                        parsedConfiguration = (LinkedHashMap)JsonUtils.parse(this.form.getField("ConfigJSON").getDefaultValue());
+                    }
                     // Save configuration as string
                     String stringConfiguration = Json.toString(parsedConfiguration);
                     // Replace dynamic value placeholders with the values

@@ -124,7 +124,7 @@
                                         <b><span class="fa fa-home"></span> Kapp Home<b>
                                     </a>
                                 </c:if>
-                                <a href="${bundle.kappLocation}?setup=wizard&step=${SetupHelper.getWizardNextStep(null)}" 
+                                <a href="${request.getContextPath}?setup=wizard&step=${SetupHelper.getWizardNextStep(null)}" 
                                         class="btn btn-lg btn-primary">
                                     <b><span class="fa fa-play"></span> Start<b>
                                 </a>
